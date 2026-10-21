@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #f5f6f7;
+    --surface: #ffffff;
+    --surface-hover: #ebebeb;
+    --surface-elevated: #ffffff;
+    --divider: #d9d9d9;
+    --text-primary: #32363a;
+    --text-secondary: #6a6d70;
+    --text-muted: #89919a;
+    --foreground: #32363a;
+    --primary: #0070f2;
+    --primary-hover: #0064d9;
+    --primary-foreground: #ffffff;
+    --success: #107e3e;
+    --success-subtle: #f5faf6;
+    --warning: #e9730c;
+    --warning-subtle: #fef7f1;
+    --danger: #bb0000;
+    --danger-subtle: #ffecec;
+    --info: #0070f2;
+    --info-subtle: #edf6ff;
+    --ring: #0070f2;
+    --sidebar-bg: #ffffff;
+    --sidebar-active: #ebf5fe;
+    --sidebar-active-accent: #0070f2;
+    --chart-1: #0070f2;
+    --chart-2: #107e3e;
+    --chart-3: #e9730c;
+    --chart-4: #bb0000;
+    --chart-5: #5c6bc0;
+    --chart-6: #6a6d70;
+    --chart-grid: #e5e5e5;
+    --disabled: #a9b4be;
+    --disabled-foreground: #89919a;
+
+    --card: var(--surface);
+    --card-foreground: var(--text-primary);
+    --popover: var(--surface-elevated);
+    --popover-foreground: var(--text-primary);
+    --secondary: var(--surface-hover);
+    --secondary-foreground: var(--text-primary);
+    --muted: var(--surface-hover);
+    --muted-foreground: var(--text-muted);
+    --accent: var(--sidebar-active);
+    --accent-foreground: var(--text-primary);
+    --destructive: var(--danger);
+    --destructive-foreground: var(--primary-foreground);
+    --border: var(--divider);
+    --input: var(--divider);
+
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 8px;
+    --radius-xl: 8px;
+    --radius: 0.5rem;
+
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.08);
+    --shadow-md: 0 4px 12px rgb(0 0 0 / 0.12);
+  }
+
+  .dark {
+    --background: #1d2d3e;
+    --surface: #253548;
+    --surface-hover: #2e4054;
+    --surface-elevated: #2e4054;
+    --divider: #3a4552;
+    --text-primary: #f5f6f7;
+    --text-secondary: #a9b4be;
+    --text-muted: #8396a8;
+    --foreground: #f5f6f7;
+    --primary: #4db1ff;
+    --primary-hover: #89d1ff;
+    --primary-foreground: #1d2d3e;
+    --success: #6ce39c;
+    --success-subtle: #1c3829;
+    --warning: #ffc933;
+    --warning-subtle: #3d3319;
+    --danger: #ff8888;
+    --danger-subtle: #3d2020;
+    --info: #4db1ff;
+    --info-subtle: #1a3a52;
+    --ring: #4db1ff;
+    --sidebar-bg: #253548;
+    --sidebar-active: #1a3a52;
+    --sidebar-active-accent: #4db1ff;
+    --chart-1: #4db1ff;
+    --chart-2: #6ce39c;
+    --chart-3: #ffc933;
+    --chart-4: #ff8888;
+    --chart-5: #9fa8da;
+    --chart-6: #a9b4be;
+    --chart-grid: #3a4552;
+    --disabled: #5b738b;
+    --disabled-foreground: #8396a8;
+    --destructive-foreground: var(--text-primary);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    font-size: 14px;
+  }
+
+  body {
+    @apply bg-background font-sans text-text-primary antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
