@@ -380,6 +380,24 @@ Tiles sit on `surface` with no border frame. Chart tile: title bar (`section-tit
 
 Centered column on solid `background`. Form on `surface`, no decorative strokes, no gradient backdrop. Logo above form.
 
+#### Marketing landing (public, no shell)
+
+```
+┌─ Landing nav (surface, border-b divider): EMP | Sign in | Get started ─┐
+├─ Hero (min-h viewport): brand EMP (hero), one headline, one sentence,  ┤
+│  CTA group, full-bleed product mock on background canvas               │
+├─ Modules section: People | Customers | Work (flat tiles, no borders)   ┤
+└─ Footer (divider top): product line + sign-in link                     ┘
+```
+
+| Rule | Spec |
+|------|------|
+| Route | `/` public; authenticated app home is `/app` |
+| Brand | “EMP” is the dominant first-viewport signal (larger than headline) |
+| Surfaces | Same as product: `background` canvas, `surface` tiles, no gradients, no decorative strokes |
+| Motion | Subtle fade/slide on hero copy and mock (respect `prefers-reduced-motion`) |
+| CTAs | Primary → `/login`; secondary ghost → `#modules` or `/login` |
+
 ---
 
 ## 7. Component inventory
@@ -606,7 +624,8 @@ Every list view **must** implement all three states.
 
 | Group | Item | Route | Lucide icon | Notes |
 |-------|------|-------|-------------|-------|
-| — | Dashboard | `/` | `LayoutDashboard` | Role-based widgets |
+| — | Landing (public) | `/` | — | Marketing entry; no shell |
+| — | Dashboard | `/app` | `LayoutDashboard` | Role-based widgets |
 | People | Employees | `/people/employees` | `Users` | HR core |
 | People | Leave | `/people/leave` | `CalendarOff` | |
 | People | Attendance | `/people/attendance` | `Clock` | |

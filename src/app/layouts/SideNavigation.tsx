@@ -67,7 +67,7 @@ export function SideNavigation({
                       <li key={item.to}>
                         <NavLink
                           to={item.to}
-                          end={item.to === '/'}
+                          end={item.to === '/app'}
                           onClick={onNavigate}
                           title={collapsed ? item.label : undefined}
                           className={({ isActive }) =>

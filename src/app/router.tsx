@@ -12,6 +12,7 @@ import { ContactsPage } from '@/features/customers/ContactsPage'
 import { LeadsPage } from '@/features/customers/LeadsPage'
 import { PipelinePage } from '@/features/customers/PipelinePage'
 import { DashboardPage } from '@/features/dashboard/DashboardPage'
+import { LandingPage } from '@/features/landing/LandingPage'
 import { AttendancePage } from '@/features/people/AttendancePage'
 import { EmployeeDetailPage } from '@/features/people/EmployeeDetailPage'
 import { EmployeeListPage } from '@/features/people/EmployeeListPage'
@@ -24,6 +25,7 @@ import { SettingsLayout } from '@/features/settings/SettingsLayout'
 import { UsersRolesPage } from '@/features/settings/UsersRolesPage'
 
 export const router = createBrowserRouter([
+  { path: '/', element: <LandingPage /> },
   {
     element: <GuestRoute />,
     children: [
@@ -44,7 +46,7 @@ export const router = createBrowserRouter([
       {
         element: <AppShell />,
         children: [
-          { path: '/', element: <DashboardPage /> },
+          { path: '/app', element: <DashboardPage /> },
           { path: '/people/employees', element: <EmployeeListPage /> },
           { path: '/people/employees/:id', element: <EmployeeDetailPage /> },
           { path: '/people/leave', element: <LeaveRequestsPage /> },

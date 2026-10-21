@@ -3,6 +3,6 @@ import { useAuth } from '@/hooks/useAuth'
 
 export function GuestRoute() {
   const { isAuthenticated } = useAuth()
-  if (isAuthenticated) return <Navigate to="/" replace />
+  if (isAuthenticated) return <Navigate to="/app" replace />
   return <Outlet />
 }

@@ -26,7 +26,7 @@ export function MfaPage() {
   const onSubmit = form.handleSubmit(async (values) => {
     try {
       await completeMfa(values.code)
-      navigate('/')
+      navigate('/app')
     } catch (error) {
       form.setError('code', {
         message: error instanceof Error ? error.message : 'Invalid code',

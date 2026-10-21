@@ -15,6 +15,8 @@ npm run dev
 
 Open the URL Vite prints (usually `http://localhost:5173`).
 
+Public landing: `/` · App dashboard (after login): `/app`
+
 ### Demo login
 
 1. Any demo email from the login form (default prefilled).
