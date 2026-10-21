@@ -819,7 +819,7 @@ EmployeeListPage → useEmployees(filters) → employeeKeys + fetchEmployees
 
 | Item | Value |
 |------|--------|
-| Status | Draft — awaiting approval before Step 2 scaffold |
+| Status | Approved — frontend scaffold implemented |
 | Stack | React 18, Vite, TypeScript, Tailwind, shadcn/ui, React Query, React Router, Lucide |
 | Visual reference | SAP Analytics Cloud / Fiori Horizon (flat, no gradients, no decorative strokes) |
 | Default brand | Horizon Blue `#0070F2` / dark `#4DB1FF`, IBM Plex Sans |
