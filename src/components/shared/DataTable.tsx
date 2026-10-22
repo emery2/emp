@@ -99,13 +99,20 @@ export function DataTable<T>({
     getRowId: (row) => getRowId(row),
     getCoreRowModel: getCoreRowModel(),
     manualSorting: true,
-    manualPagination: true,
+    manualPagination: Boolean(pagination),
     state: {
-      sorting,
-      rowSelection,
-      pagination: pagination
-        ? { pageIndex: pagination.pageIndex, pageSize: pagination.pageSize }
-        : undefined,
+      // Always provide objects — undefined controlled state crashes when
+      // TanStack Table indexes by row id (e.g. rowSelection['emp-1']).
+      sorting: sorting ?? [],
+      rowSelection: rowSelection ?? {},
+      ...(pagination
+        ? {
+            pagination: {
+              pageIndex: pagination.pageIndex,
+              pageSize: pagination.pageSize,
+            },
+          }
+        : {}),
     },
     onSortingChange,
     onRowSelectionChange,
@@ -218,12 +225,14 @@ export function DataTable<T>({
       {pagination ? (
         <div className="flex items-center justify-between border-t border-divider px-3 py-2">
           <p className="text-xs text-text-secondary tabular-nums">
-            {pagination.total === 0
-              ? '0 results'
-              : `${pagination.pageIndex * pagination.pageSize + 1}–${Math.min(
-                  (pagination.pageIndex + 1) * pagination.pageSize,
-                  pagination.total,
-                )} of ${pagination.total}`}
+            {isLoading
+              ? 'Loading…'
+              : pagination.total === 0
+                ? '0 results'
+                : `${pagination.pageIndex * pagination.pageSize + 1}–${Math.min(
+                    (pagination.pageIndex + 1) * pagination.pageSize,
+                    pagination.total,
+                  )} of ${pagination.total}`}
           </p>
           <div className="flex items-center gap-2">
             <Button
