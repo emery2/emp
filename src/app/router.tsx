@@ -12,6 +12,7 @@ import { ContactsPage } from '@/features/customers/ContactsPage'
 import { LeadsPage } from '@/features/customers/LeadsPage'
 import { PipelinePage } from '@/features/customers/PipelinePage'
 import { DashboardPage } from '@/features/dashboard/DashboardPage'
+import { CalendarPage } from '@/features/calendar/CalendarPage'
 import { LandingPage } from '@/features/landing/LandingPage'
 import { AttendancePage } from '@/features/people/AttendancePage'
 import { EmployeeDetailPage } from '@/features/people/EmployeeDetailPage'
@@ -47,6 +48,7 @@ export const router = createBrowserRouter([
         element: <AppShell />,
         children: [
           { path: '/app', element: <DashboardPage /> },
+          { path: '/calendar', element: <CalendarPage /> },
           { path: '/people/employees', element: <EmployeeListPage /> },
           { path: '/people/employees/:id', element: <EmployeeDetailPage /> },
           { path: '/people/leave', element: <LeaveRequestsPage /> },

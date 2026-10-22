@@ -8,6 +8,9 @@ import '@fontsource/ibm-plex-mono/400.css'
 import '@/styles/globals.css'
 import { AppProviders } from '@/app/providers/AppProviders'
 
+document.documentElement.classList.remove('dark')
+localStorage.removeItem('emp-theme')
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AppProviders />

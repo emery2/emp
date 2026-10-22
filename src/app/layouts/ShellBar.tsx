@@ -1,13 +1,12 @@
 import {
   Building2,
+  CalendarDays,
   LogOut,
   Menu,
-  Moon,
   Search,
-  Sun,
   UserRound,
 } from 'lucide-react'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -22,10 +21,10 @@ import { Input } from '@/components/ui/input'
 import { useAuth } from '@/hooks/useAuth'
 import { useShell } from '@/hooks/useShell'
 import { useTenant } from '@/hooks/useTenant'
-import { useTheme } from '@/hooks/useTheme'
 import { roleLabels } from '@/lib/rbac'
 
 function moduleTitle(pathname: string): string {
+  if (pathname.startsWith('/calendar')) return 'Calendar'
   if (pathname.startsWith('/people')) return 'People'
   if (pathname.startsWith('/customers')) return 'Customers'
   if (pathname.startsWith('/work')) return 'Work'
@@ -41,7 +40,6 @@ export function ShellBar() {
   const { pathname } = useLocation()
   const { user, logout } = useAuth()
   const { tenant, tenants, setTenantId } = useTenant()
-  const { theme, setTheme, resolvedTheme } = useTheme()
   const { setMobileOpen } = useShell()
 
   if (!user) return null
@@ -105,27 +103,10 @@ export function ShellBar() {
             </DropdownMenuContent>
           </DropdownMenu>
         ) : null}
-        <Button
-          variant="ghost"
-          size="icon"
-          aria-label="Toggle theme"
-          onClick={() =>
-            setTheme(
-              theme === 'system'
-                ? resolvedTheme === 'dark'
-                  ? 'light'
-                  : 'dark'
-                : theme === 'dark'
-                  ? 'light'
-                  : 'dark',
-            )
-          }
-        >
-          {resolvedTheme === 'dark' ? (
-            <Sun className="h-4 w-4" strokeWidth={1.5} />
-          ) : (
-            <Moon className="h-4 w-4" strokeWidth={1.5} />
-          )}
+        <Button variant="ghost" size="icon" asChild aria-label="Open calendar">
+          <Link to="/calendar">
+            <CalendarDays className="h-4 w-4" strokeWidth={1.5} />
+          </Link>
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

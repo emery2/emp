@@ -13,6 +13,7 @@ export function canAccessNav(
   role: Role,
   item:
     | 'dashboard'
+    | 'calendar'
     | 'people'
     | 'crm'
     | 'work'
@@ -29,6 +30,8 @@ export function canAccessNav(
   switch (item) {
     case 'dashboard':
       return true
+    case 'calendar':
+      return role !== 'external'
     case 'people':
       return role !== 'external'
     case 'crm':

@@ -60,12 +60,11 @@ EMP follows the interaction and surface grammar of **SAP Analytics Cloud (SAC)**
 
 ### Mechanism
 
-- `:root` and `.dark` define semantic tokens (§3).
+- `:root` defines light semantic tokens only (§3). **Dark mode is not supported.**
 - `.tenant-branded` on `<html>` (or app root) sets tenant overrides:
   - `--brand-primary` (HSL components for Tailwind `hsl(var(--primary))`)
   - `--brand-primary-foreground`
   - `--tenant-logo-url` (optional; ShellBar / SideNavigation `<img>` or CSS background slot)
-- `ThemeProvider`: `light` | `dark` | `system`; persist in `localStorage` key `emp-theme`.
 - Tenant brand loaded from mock org settings (later API); applied on login and tenant switch.
 
 ### Default tenant (NORF placeholder)
@@ -73,7 +72,6 @@ EMP follows the interaction and surface grammar of **SAP Analytics Cloud (SAC)**
 | Property | Value |
 |----------|--------|
 | Primary (light) | `#0070F2` (SAP Horizon Blue) |
-| Primary (dark) | `#4DB1FF` |
 | Logo slot collapsed | 32×32 |
 | Logo slot expanded | max 120×32 |
 | Logo treatment | Flat mark on `surface` — no plate, no gradient |
@@ -97,7 +95,7 @@ EMP follows the interaction and surface grammar of **SAP Analytics Cloud (SAC)**
 | `--accent` | `sidebar-active` | Accent fills |
 | `--accent-foreground` | `text-primary` | |
 | `--destructive` | `danger` | |
-| `--destructive-foreground` | `primary-foreground` (light) / `text-primary` (dark) | |
+| `--destructive-foreground` | `primary-foreground` | |
 | `--border` | `divider` | Structural only |
 | `--input` | `divider` | Input underline / edge |
 | `--ring` | `ring` | Focus |
@@ -141,47 +139,16 @@ All values are exact hex. Components use Tailwind semantic classes that resolve 
 | `disabled` | `#A9B4BE` | Disabled control chrome |
 | `disabled-foreground` | `#89919A` | Disabled text |
 
-### Dark theme
-
-| Token | Hex | Usage |
-|-------|-----|--------|
-| `background` | `#1D2D3E` | App canvas (Horizon dark shell) |
-| `surface` | `#253548` | Tiles, tables, panels |
-| `surface-hover` | `#2E4054` | Row / nav hover, filled inputs |
-| `surface-elevated` | `#2E4054` | Dialog / popover |
-| `divider` | `#3A4552` | Structural dividers only |
-| `text-primary` | `#F5F6F7` | Primary text |
-| `text-secondary` | `#A9B4BE` | Secondary |
-| `text-muted` | `#8396A8` | Muted |
-| `primary` | `#4DB1FF` | Primary actions |
-| `primary-hover` | `#89D1FF` | Hover |
-| `primary-foreground` | `#1D2D3E` | On primary buttons |
-| `success` | `#6CE39C` | Success |
-| `success-subtle` | `#1C3829` | Success badge bg |
-| `warning` | `#FFC933` | Warning |
-| `warning-subtle` | `#3D3319` | Warning badge bg |
-| `danger` | `#FF8888` | Danger |
-| `danger-subtle` | `#3D2020` | Danger badge bg |
-| `info` | `#4DB1FF` | Info |
-| `info-subtle` | `#1A3A52` | Info badge bg |
-| `ring` | `#4DB1FF` | Focus ring |
-| `sidebar-bg` | `#253548` | Side navigation |
-| `sidebar-active` | `#1A3A52` | Active nav fill |
-| `sidebar-active-accent` | `#4DB1FF` | 3px left active indicator |
-| `chart-grid` | `#3A4552` | Chart gridlines |
-| `disabled` | `#5B738B` | Disabled control chrome |
-| `disabled-foreground` | `#8396A8` | Disabled text |
-
 ### Chart series (solid fills only)
 
-| Series | Light | Dark |
-|--------|-------|------|
-| `chart-1` | `#0070F2` | `#4DB1FF` |
-| `chart-2` | `#107E3E` | `#6CE39C` |
-| `chart-3` | `#E9730C` | `#FFC933` |
-| `chart-4` | `#BB0000` | `#FF8888` |
-| `chart-5` | `#5C6BC0` | `#9FA8DA` |
-| `chart-6` | `#6A6D70` | `#A9B4BE` |
+| Series | Hex |
+|--------|-----|
+| `chart-1` | `#0070F2` |
+| `chart-2` | `#107E3E` |
+| `chart-3` | `#E9730C` |
+| `chart-4` | `#BB0000` |
+| `chart-5` | `#5C6BC0` |
+| `chart-6` | `#6A6D70` |
 
 No gradient `<defs>` in Recharts. Area charts use solid fill at ≤20% opacity of the series color if needed for readability — never a gradient stop.
 
@@ -327,7 +294,7 @@ Never use multi-layer or colored shadows. Never elevate tiles.
 
 | Region | Spec |
 |--------|------|
-| **ShellBar** | Full width, `surface`, `border-b` `divider`, height 52px. Left: product name + current module title. Right: global search, tenant switcher, theme toggle, user menu. |
+| **ShellBar** | Full width, `surface`, `border-b` `divider`, height 52px. Left: product name + current module title. Right: global search, tenant switcher, calendar shortcut (`CalendarDays`), user menu. |
 | **SideNavigation** | Left, `sidebar-bg` / `surface`, **no right border** — canvas contrast separates. Grouped items. Active: `sidebar-active` fill + 3px `sidebar-active-accent` left bar. Collapse to icon-only 64px. Footer: Settings shortcut. |
 | **Content canvas** | `background`, scrollable. Dashboard: padded tile grid. Lists: full-bleed table on `surface`. |
 
@@ -685,6 +652,7 @@ Every list view **must** implement all three states.
 |-------|------|-------|-------------|-------|
 | — | Landing (public) | `/` | — | Marketing entry; no shell |
 | — | Dashboard | `/app` | `LayoutDashboard` | Role-based widgets |
+| — | Calendar | `/calendar` | `CalendarDays` | Month grid of leave / schedule |
 | People | Employees | `/people/employees` | `Users` | HR core |
 | People | Leave | `/people/leave` | `CalendarOff` | |
 | People | Attendance | `/people/attendance` | `Clock` | |
@@ -818,7 +786,7 @@ Target: **WCAG 2.1 AA**.
 src/
   app/
     layouts/           # AppShell, AuthLayout, ShellBar, SideNavigation
-    providers/         # ThemeProvider, QueryClientProvider, AuthProvider, TenantProvider
+    providers/         # QueryClientProvider, AuthProvider, TenantProvider
     routes/            # route tree, ProtectedRoute
   components/
     ui/                # shadcn primitives (generated)
@@ -834,13 +802,13 @@ src/
     people/
     customers/
     settings/
-  hooks/               # useTheme, useTenant, useAuth, useFeatureFlags
+  hooks/               # useTenant, useAuth, useFeatureFlags
   lib/                 # cn(), formatters, zod helpers
   mocks/               # fixtures + mock API handlers
   api/                 # React Query keys + queryFns (swap layer for FastAPI)
   types/               # Role, FeatureFlag, entities
   styles/
-    globals.css        # CSS variables (light/dark), base
+    globals.css        # CSS variables (light), base
 ```
 
 ### Naming conventions
@@ -900,6 +868,5 @@ EmployeeListPage → useEmployees(filters) → employeeKeys + fetchEmployees
 | Status | Approved — frontend scaffold implemented |
 | Stack | React 18, Vite, TypeScript, Tailwind, shadcn/ui, React Query, React Router, Lucide |
 | Visual reference | SAP Analytics Cloud / Fiori Horizon (flat, no gradients, no decorative strokes) |
-| Default brand | Horizon Blue `#0070F2` / dark `#4DB1FF`, IBM Plex Sans |
-
-**Next (after approval):** Step 2.1 — project scaffold, Tailwind + shadcn driven by these tokens, ThemeProvider (light/dark + tenant brand variables).
+| Default brand | Horizon Blue `#0070F2`, IBM Plex Sans |
+| Theme | Light only (no dark mode) |

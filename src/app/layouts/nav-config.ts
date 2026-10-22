@@ -1,5 +1,6 @@
 import {
   BarChart3,
+  CalendarDays,
   CalendarOff,
   CheckSquare,
   Clock,
@@ -23,6 +24,7 @@ export interface NavItem {
   icon: LucideIcon
   area:
     | 'dashboard'
+    | 'calendar'
     | 'people'
     | 'crm'
     | 'work'
@@ -48,6 +50,12 @@ export const navGroups: NavGroup[] = [
         to: '/app',
         icon: LayoutDashboard,
         area: 'dashboard',
+      },
+      {
+        label: 'Calendar',
+        to: '/calendar',
+        icon: CalendarDays,
+        area: 'calendar',
       },
     ],
   },

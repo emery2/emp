@@ -13,8 +13,6 @@ export type FeatureFlag =
   | 'automation.beta'
   | 'reports.advanced'
 
-export type ThemeMode = 'light' | 'dark' | 'system'
-
 export type StatusBadgeVariant =
   | 'success'
   | 'warning'
