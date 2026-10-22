@@ -21,12 +21,16 @@ export const employeeKeys = {
 
 export async function fetchEmployees(params: {
   q?: string
+  status?: Employee['status'] | 'all'
   page?: number
   pageSize?: number
 }): Promise<PaginatedResult<Employee>> {
   await delay()
   const q = (params.q ?? '').toLowerCase()
   const filtered = employees.filter((e) => {
+    if (params.status && params.status !== 'all' && e.status !== params.status) {
+      return false
+    }
     if (!q) return true
     const haystack = `${e.firstName} ${e.lastName} ${e.email} ${e.departmentName} ${e.title}`.toLowerCase()
     return haystack.includes(q)
@@ -51,10 +55,14 @@ export async function fetchEmployee(id: string): Promise<Employee> {
 
 export async function fetchLeaveRequests(params: {
   q?: string
+  status?: LeaveRequest['status'] | 'all'
 }): Promise<LeaveRequest[]> {
   await delay()
   const q = (params.q ?? '').toLowerCase()
   return leaveRequests.filter((item) => {
+    if (params.status && params.status !== 'all' && item.status !== params.status) {
+      return false
+    }
     if (!q) return true
     return `${item.employeeName} ${item.departmentName} ${item.type}`
       .toLowerCase()
@@ -64,10 +72,14 @@ export async function fetchLeaveRequests(params: {
 
 export async function fetchAttendance(params: {
   q?: string
+  status?: AttendanceRecord['status'] | 'all'
 }): Promise<AttendanceRecord[]> {
   await delay()
   const q = (params.q ?? '').toLowerCase()
   return attendanceRecords.filter((item) => {
+    if (params.status && params.status !== 'all' && item.status !== params.status) {
+      return false
+    }
     if (!q) return true
     return `${item.employeeName} ${item.departmentName} ${item.status}`
       .toLowerCase()

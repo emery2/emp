@@ -542,6 +542,21 @@ No illustration SVGs.
 | `collapsed` | `boolean` | Progressive disclosure |
 | `onCollapsedChange` | `(v: boolean) => void` | |
 
+#### `CollectionToolbar`
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `sort` | `{ field: string; direction: 'asc' \| 'desc'; options; onChange }` | Sort dropdown |
+| `onRefresh` | `() => void` | Refetch |
+| `isRefreshing` | `boolean` | Busy state on refresh |
+| `view` | `ViewMode` | Active view id |
+| `views` | `ViewMode[]` | Allowed modes for this page |
+| `onViewChange` | `(view: ViewMode) => void` | Persist + switch |
+
+#### `EntityCollection<T>` (page helper)
+
+Wraps FilterBar + CollectionToolbar + switches among view renderers (`ListView`/`DataTable`, `GridView`, `TileView`, `KanbanBoard`, `ChartView`, `TimelineView`, `SplitView`, custom stub).
+
 #### `RoleGate`
 
 | Prop | Type | Description |
@@ -568,16 +583,60 @@ No illustration SVGs.
 
 ## 8. Patterns
 
+### Collection toolbar (filter, sort, refresh, view)
+
+Every collection page (People, Customers, and later Work/Support) uses a shared **`CollectionToolbar`** above the active view.
+
+```
+┌─ FilterBar (search + facet filters + clear) ──────────────────────────┐
+├─ CollectionToolbar: [Sort] [Refresh] ………… [View switcher] ───────────┤
+└─ Active view (list | grid | kanban | tile | chart | timeline | split | custom)
+```
+
+| Control | Behavior |
+|---------|----------|
+| **Filter** | Search (300ms debounce) + optional facet filters; active count + Clear all |
+| **Sort** | Dropdown of sort fields + asc/desc; also reflected in list column headers when in list view |
+| **Refresh** | Invalidates the page query (`refetch`); button shows brief busy state |
+| **View** | Segmented/`DropdownMenu` switcher; persists per route in `localStorage` key `emp-view:{route}` |
+
+#### View modes
+
+| Mode | Id | When to offer | Presentation |
+|------|-----|---------------|--------------|
+| **List** (default) | `list` | Always | `DataTable` — primary table view |
+| **Grid** | `grid` | Directories, contacts | Responsive card grid (identity + key fields) |
+| **Tile** | `tile` | KPI-heavy or compact catalogs | Dense equal tiles (label + primary value + meta) |
+| **Kanban** | `kanban` | Pipeline, work stages | `KanbanBoard` by status/stage |
+| **Chart** | `chart` | Aggregatable metrics | Solid-fill Recharts summary for current filtered set |
+| **Timeline** | `timeline` | Date-ordered entities (leave, activity) | Vertical chronological list |
+| **Split** | `split` | Master–detail browsing | List pane + detail pane (no route change until “Open”) |
+| **Custom** | `custom` | Power users | Saved column/field layout stub (toast / coming-soon until persistence API) |
+
+**Module defaults**
+
+| Page | Allowed views | Default |
+|------|---------------|---------|
+| Employees | list, grid, tile, split, chart, custom | list |
+| Leave | list, timeline, chart, custom | list |
+| Attendance | list, tile, chart, custom | list |
+| Leads | list, grid, kanban, chart, split, custom | list |
+| Contacts | list, grid, tile, split, custom | list |
+| Pipeline | kanban, list, chart, custom | kanban |
+
+Surface rules apply to all views: flat `surface` / `background`, no gradients, no decorative card borders.
+
 ### Tables
 
 | Concern | Spec |
 |---------|------|
 | Pagination | Server-driven; default page size **25**; options 10 / 25 / 50 / 100 |
-| Sort | Tri-state column headers; `aria-sort`; sync to URL search params |
-| Filters | Debounced search 300ms; facet chips above table; Clear all |
+| Sort | Tri-state column headers + toolbar Sort control; `aria-sort`; sync to URL when practical |
+| Filters | Debounced search 300ms; facet chips above collection; Clear all |
+| Refresh | Toolbar refresh + query Retry on error |
 | Bulk actions | Appear when `selectedCount > 0`; destructive → `AlertDialog` |
-| Row click | → detail route; checkbox column `stopPropagation` |
-| Loading | 5 skeleton rows matching column layout |
+| Row click | → detail route (list/grid/tile); split uses in-pane preview |
+| Loading | 5 skeleton rows / skeleton tiles matching view |
 | Empty | Contextual `EmptyState` |
 | Error | Destructive `Alert` + Retry → `queryClient.invalidateQueries` |
 
