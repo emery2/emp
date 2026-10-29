@@ -1,24 +1,21 @@
 import { ChevronsLeft, ChevronsRight } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
+import { hasAnyPermission } from '@/access/evaluate'
 import { navGroups } from '@/app/layouts/nav-config'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useAuth } from '@/hooks/useAuth'
-import { useFeatureFlags } from '@/hooks/useFeatureFlags'
+import { useBranding } from '@/hooks/useBranding'
 import { useShell } from '@/hooks/useShell'
-import { useTenant } from '@/hooks/useTenant'
+import { isModuleEnabled } from '@/mocks/modules'
+import { organization } from '@/mocks/organization'
 import { cn } from '@/lib/cn'
-import { canAccessNav } from '@/lib/rbac'
 
-export function SideNavigation({
-  onNavigate,
-}: {
-  onNavigate?: () => void
-}) {
+export function SideNavigation({ onNavigate }: { onNavigate?: () => void }) {
   const { collapsed, toggleCollapsed } = useShell()
   const { user } = useAuth()
-  const { flags } = useFeatureFlags()
-  const { tenant } = useTenant()
+  const branding = useBranding()
+  const logoUrl = branding.data?.logoUrl
 
   if (!user) return null
 
@@ -35,12 +32,23 @@ export function SideNavigation({
           collapsed && 'justify-center',
         )}
       >
-        <div className="flex h-8 w-8 items-center justify-center bg-sidebar-active text-xs font-bold text-primary">
-          {tenant.name.slice(0, 2).toUpperCase()}
-        </div>
+        {logoUrl ? (
+          <img
+            src={logoUrl}
+            alt=""
+            className={cn(
+              'object-contain',
+              collapsed ? 'h-8 w-8' : 'h-8 max-w-[7.5rem]',
+            )}
+          />
+        ) : (
+          <div className="flex h-8 w-8 items-center justify-center bg-sidebar-active text-xs font-bold text-primary">
+            {organization.name.slice(0, 2).toUpperCase()}
+          </div>
+        )}
         {!collapsed ? (
           <div className="min-w-0">
-            <p className="truncate text-sm font-semibold">{tenant.name}</p>
+            <p className="truncate text-sm font-semibold">{organization.name}</p>
             <p className="truncate text-xs text-text-muted">EMP</p>
           </div>
         ) : null}
@@ -48,10 +56,11 @@ export function SideNavigation({
       <ScrollArea className="flex-1 px-2 pb-2">
         <nav aria-label="Primary" className="space-y-4">
           {navGroups.map((group, groupIndex) => {
-            const items = group.items.filter((item) => {
-              if (item.feature && !flags[item.feature]) return false
-              return canAccessNav(user.role, item.area, flags)
-            })
+            const items = group.items.filter(
+              (item) =>
+                hasAnyPermission(user, item.permissions) &&
+                (!item.module || isModuleEnabled(item.module)),
+            )
             if (items.length === 0) return null
             return (
               <div key={group.label ?? `group-${groupIndex}`}>

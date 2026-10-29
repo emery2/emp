@@ -1,0 +1,210 @@
+PROJECT BRIEF
+Enterprise Management
+Platform (EMP)
+A concise reference for scope, phasing, ownership, risks, and
+open decisions as the project moves into build.
+PROJECT Enterprise Management Platform (EMP)
+TYPE Multi-tenant SaaS, modular services, new build
+VERSION 2.0
+STATUS Draft for approval
+SPONSOR [Sponsor name]
+PROJECT LEAD [Project lead name]
+DATE October 2026
+01 Project Overview
+Build a multi-tenant SaaS platform made of separately chosen services (HR, CRM,
+partners, performance, projects, service desk, and later operations), so each client runs only
+what it needs on one shared core that follows its own organizational hierarchy.
+Organizations today run on disconnected tools, or on large suites that force them to buy and learn
+modules they do not use. EMP offers shared people, roles, approvals, and data, with services that can be
+switched on or off per client.
+Why this structure
+Clients choose services, so entry cost is low and expansion is a configuration change.
+Every service must work alone, which keeps the product sellable in pieces and each piece testable.
+Authority follows the real company hierarchy, from owners to junior staff.
+• 
+• 
+• 
+Enterprise Management Platform (EMP) | Page 2 of 10
+02 Objectives & Success Criteria
+Deliver a secure multi-tenant foundation with automated onboarding.
+Ship HR and CRM first, because they are the core product.
+Make every service independently usable, with optional integrations between them.
+Model the full company hierarchy and the two-part leave approval.
+CRITERION TARGET
+API performance 95% of standard CRUD requests under 200ms
+Availability 99.9% monthly uptime; RPO under 1 hour; RTO under 4 hours
+Concurrency 5,000 global users; 2,000 per tenant
+Tenant onboarding Automated sign-up to active workspace, no manual provisioning
+Service
+independence
+Each service passes tests with only the core and its hard dependencies enabled
+Entitlements A disabled service is unreachable through routes, data access, and permissions, not only
+hidden in the menu
+Isolation Automated tests prove one tenant can never read another's data
+Full detail is in the PRD (Sections 19 to 23).
+• 
+• 
+• 
+• 
+Enterprise Management Platform (EMP) | Page 3 of 10
+03 Scope
+In scope
+Always-on core: auth, organization and
+hierarchy, roles, entitlements, approvals,
+notifications, documents, reference data
+HR including two-part leave approval
+CRM with configurable pipeline
+PRM, EPM (objectives and KPIs), Projects,
+Service Desk
+Workflow builder with multi-step and role-based
+approvers
+Module entitlements, toggles, and industry
+bundles
+Later or out of scope
+Operations services (Finance, Sales,
+Procurement, Inventory, Logistics, Planning,
+Manufacturing, CX): planned, need a PRD
+addendum first
+EPM budgets and forecasts: only with Finance
+Payment processing, tax filing, statutory
+accounting compliance
+Pricing and billing engine
+Mobile apps, public API, marketplace: last phase
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+Enterprise Management Platform (EMP) | Page 4 of 10
+04 Service Catalog & Deliverables by Phase
+PHASE DELIVERABLES
+1. Foundation Tenant provisioning, auth, organization and departments, Head of Department
+appointment, users and roles, module manifests and entitlements, toggle screens, core
+dashboard
+2. Core product HR (employees, attendance, leave with two-part approval), CRM (leads, customers,
+pipeline), Head of Department dashboards
+3. Operations of
+work
+Projects and tasks, Service Desk with SLAs, PRM (partner directory, onboarding,
+agreements, portal)
+4. Intelligence &
+automation
+EPM (objectives, KPIs, scorecards, reviews), visual workflow builder, documents,
+advanced notifications, advanced reporting, integrations
+5. Operations
+services
+Procurement, Inventory, Sales, Finance, then Logistics, Planning, Manufacturing, CX;
+EPM budgets; industry presets
+6. Advanced Mobile apps, public API and developer portal, marketplace, industry extensions
+Service rules that apply to every delivery
+Works on core plus hard dependencies only; integrations are optional adapters.
+Services never import each other's internals; they use shared contracts.
+Disabling a service keeps its data; enabling requires its dependencies.
+Technical documentation (OpenAPI, data model, deployment runbooks) is delivered with each phase.
+• 
+• 
+• 
+• 
+Enterprise Management Platform (EMP) | Page 5 of 10
+05 Timeline & Milestones
+PHASE 1 · [START – END]
+Foundation & Entitlements
+Provisioning, organization, roles, module registry and toggles. No business modules yet.
+PHASE 2 · [START – END]
+Core Product: HR and CRM
+First sellable release. Leave approval and sales pipeline end to end.
+PHASE 3 · [START – END]
+Projects, Service Desk, PRM
+Each service can be released independently.
+PHASE 4 · [START – END]
+EPM and Workflow Engine
+Leave moves onto the configurable workflow engine.
+PHASE 5 · [START – END]
+Operations Services
+Starts only after the operations PRD addendum is approved.
+PHASE 6 · [START – END]
+Advanced Enterprise
+Mobile, public API, marketplace, industry extensions.
+Note: Dates are open pending resourcing. Fill in per your delivery calendar.
+Enterprise Management Platform (EMP) | Page 6 of 10
+06 Team & Ownership
+ROLE NAME RESPONSIBILITY
+Project Sponsor [Name] Accountable for business outcome and budget
+Product Lead [Name] Requirements, prioritization, roadmap, packaging decisions
+Engineering Lead [Name] Architecture, module boundaries, delivery
+Design Lead [Name] Design system and UX across services
+QA / Security [Name] Test strategy, tenant isolation, authorization tests, audit logging
+Domain advisors (HR, Sales,
+Finance)
+[Names] Requirements input and acceptance testing; a finance advisor is
+needed before Phase 5
+Enterprise Management Platform (EMP) | Page 7 of 10
+07 Risks & Assumptions
+RISK IMPACT MITIGATION
+Cross-tenant data leakage High PostgreSQL row-level security, middleware checks,
+isolation tests in CI
+Service boundaries erode, so services
+depend on each other and cannot be
+sold alone
+High Shared contracts, import-boundary test, module
+combination test matrix
+Entitlements enforced only in the UI High Enforce in routes, data access, and policy; server-side
+rules recorded for the backend
+Accounting and inventory errors in
+operations services
+High Finance advisor, immutable posted documents, balance
+and stock-ledger tests, no compliance claims until
+reviewed per country
+Scope breadth (14 services) delays the
+first release
+Medium Ship HR and CRM first; release services independently;
+operations only after an addendum
+Workflow engine built from scratch Medium Evaluate Temporal, n8n, or Celery before Phase 4
+Leave and labor rules differ by country Medium Tenant-configurable leave types and policies; no country
+templates at launch
+Search and reporting latency at scale Low Introduce OpenSearch early; load-test before Phase 4
+Assumptions
+The team has or will gain FastAPI, React, and PostgreSQL row-level security expertise before Phase 1.
+The frontend is built first on mock data behind interfaces that the backend later replaces.
+PRM means Partner Relationship Management and EPM means Enterprise Performance
+Management.
+• 
+• 
+• 
+Enterprise Management Platform (EMP) | Page 8 of 10
+08 Open Decisions
+# DECISION CURRENT ASSUMPTION
+1 Meaning of PRM and EPM Partner Relationship Management; Enterprise
+Performance Management
+2 Default leave rule Line approver then HR; HR-only by configuration
+3 Manager and Team Lead layers Optional, off by default
+4 Always-on core contents; whether Documents or
+Workflow are sold separately
+Core includes approvals, notifications, documents,
+item catalog, reference data
+5 Dependency strictness (for example Manufacturing
+requires Inventory)
+As in the PRD module catalog
+6 Stock valuation and accounting scope Weighted average cost; prototype accounting only
+7 Countries and labor rules at launch Tenant-configurable, no country templates
+Enterprise Management Platform (EMP) | Page 9 of 10
+09 Related Documents
+DOCUMENT PURPOSE
+Product Requirements Document v3.1 (PDF and
+Markdown)
+Full specification: modules, hierarchy, leave rules, data model,
+NFRs, roadmap
+Solution Overview v2.0 Plain-language explanation for prospects and partners
+Module model and progress files in the
+repository
+Packaging rules and build status for the engineering team
+Project Brief (this document) Scope, phasing, ownership, and risk reference for kickoff and
+sign-off
+SPONSOR APPROVAL PRODUCT LEAD APPROVAL DATE
+Enterprise Management Platform (EMP) | Page 10 of 10

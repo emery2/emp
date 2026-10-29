@@ -1,40 +1,35 @@
 import {
   BarChart3,
+  Boxes,
+  BriefcaseBusiness,
   CalendarDays,
-  CalendarOff,
-  CheckSquare,
-  Clock,
-  Contact,
-  Files,
+  ClipboardCheck,
+  ClipboardList,
+  Factory,
+  FileText,
+  FileWarning,
   FolderKanban,
-  Kanban,
+  Handshake,
+  Headphones,
   LayoutDashboard,
-  LifeBuoy,
+  Package,
   Settings,
+  ShieldAlert,
+  ShoppingCart,
+  Truck,
   UserPlus,
   Users,
-  Workflow,
   type LucideIcon,
 } from 'lucide-react'
-import type { FeatureFlag, Role } from '@/types'
+import type { ModuleId } from '@/access/modules'
+import type { Permission } from '@/access/permissions'
 
 export interface NavItem {
   label: string
   to: string
   icon: LucideIcon
-  area:
-    | 'dashboard'
-    | 'calendar'
-    | 'people'
-    | 'crm'
-    | 'work'
-    | 'support'
-    | 'automation'
-    | 'documents'
-    | 'reports'
-    | 'settings'
-  feature?: FeatureFlag
-  roles?: Role[]
+  permissions: Permission[]
+  module?: ModuleId
 }
 
 export interface NavGroup {
@@ -49,134 +44,228 @@ export const navGroups: NavGroup[] = [
         label: 'Dashboard',
         to: '/app',
         icon: LayoutDashboard,
-        area: 'dashboard',
+        permissions: [
+          'dashboard.board.view',
+          'dashboard.executive.view',
+          'dashboard.manager.view',
+          'dashboard.hr.view',
+          'dashboard.employee.view',
+          'dashboard.admin.view',
+          'dashboard.finance.view',
+          'dashboard.operations.view',
+        ],
       },
       {
         label: 'Calendar',
         to: '/calendar',
         icon: CalendarDays,
-        area: 'calendar',
+        permissions: ['calendar.view'],
       },
     ],
   },
   {
-    label: 'People',
+    label: 'HCM',
     items: [
       {
         label: 'Employees',
         to: '/people/employees',
         icon: Users,
-        area: 'people',
+        permissions: ['employees.view'],
+        module: 'hcm',
       },
       {
-        label: 'Leave',
-        to: '/people/leave',
-        icon: CalendarOff,
-        area: 'people',
-        feature: 'hr.leave',
+        label: 'Request leave',
+        to: '/leave/request',
+        icon: ClipboardList,
+        permissions: ['leave.request'],
+        module: 'hcm',
       },
       {
-        label: 'Attendance',
-        to: '/people/attendance',
-        icon: Clock,
-        area: 'people',
-        feature: 'hr.attendance',
+        label: 'My leave',
+        to: '/leave/mine',
+        icon: ClipboardList,
+        permissions: ['leave.request'],
+        module: 'hcm',
+      },
+      {
+        label: 'Manager approvals',
+        to: '/leave/manager',
+        icon: ClipboardCheck,
+        permissions: ['leave.approve.department'],
+        module: 'hcm',
+      },
+      {
+        label: 'HR verification',
+        to: '/leave/hr',
+        icon: FileWarning,
+        permissions: ['leave.verify.hr'],
+        module: 'hcm',
       },
     ],
   },
   {
-    label: 'Customers',
+    label: 'CRM / CX',
     items: [
       {
         label: 'Leads',
         to: '/customers/leads',
         icon: UserPlus,
-        area: 'crm',
-        feature: 'crm.enabled',
+        permissions: ['crm.leads.view', 'crm.leads.manage'],
+        module: 'crm',
       },
       {
-        label: 'Contacts',
-        to: '/customers/contacts',
-        icon: Contact,
-        area: 'crm',
-        feature: 'crm.enabled',
+        label: 'Opportunities',
+        to: '/crm/opportunities',
+        icon: BriefcaseBusiness,
+        permissions: ['crm.opportunities.view', 'crm.opportunities.manage'],
+        module: 'crm',
       },
       {
-        label: 'Pipeline',
-        to: '/customers/pipeline',
-        icon: Kanban,
-        area: 'crm',
-        feature: 'crm.enabled',
+        label: 'Service cases',
+        to: '/cx/cases',
+        icon: Headphones,
+        permissions: ['cx.cases.view', 'cx.cases.manage'],
+        module: 'cx',
       },
     ],
   },
   {
-    label: 'Work',
+    label: 'ERP / SCM',
     items: [
+      {
+        label: 'Quotations',
+        to: '/erp/quotations',
+        icon: FileText,
+        permissions: ['erp.quotations.view', 'erp.quotations.manage'],
+        module: 'erp',
+      },
+      {
+        label: 'Purchasing',
+        to: '/erp/purchasing',
+        icon: ShoppingCart,
+        permissions: ['erp.purchasing.view'],
+        module: 'erp',
+      },
+      {
+        label: 'Suppliers',
+        to: '/scm/suppliers',
+        icon: Truck,
+        permissions: ['scm.suppliers.view'],
+        module: 'scm',
+      },
+      {
+        label: 'Inventory',
+        to: '/scm/inventory',
+        icon: Boxes,
+        permissions: ['scm.inventory.view'],
+        module: 'scm',
+      },
+      {
+        label: 'Production',
+        to: '/scm/production',
+        icon: Factory,
+        permissions: ['scm.production.view'],
+        module: 'scm',
+      },
+    ],
+  },
+  {
+    label: 'Growth',
+    items: [
+      {
+        label: 'Partners',
+        to: '/partners',
+        icon: Handshake,
+        permissions: ['prm.partners.manage'],
+        module: 'prm',
+      },
       {
         label: 'Projects',
         to: '/work/projects',
         icon: FolderKanban,
-        area: 'work',
+        permissions: ['projects.manage'],
+        module: 'projects',
       },
       {
-        label: 'Tasks',
-        to: '/work/tasks',
-        icon: CheckSquare,
-        area: 'work',
-      },
-    ],
-  },
-  {
-    label: 'Support',
-    items: [
-      {
-        label: 'Tickets',
-        to: '/support/tickets',
-        icon: LifeBuoy,
-        area: 'support',
-      },
-    ],
-  },
-  {
-    label: 'Automation',
-    items: [
-      {
-        label: 'Workflows',
-        to: '/automation/workflows',
-        icon: Workflow,
-        area: 'automation',
-        feature: 'automation.beta',
+        label: 'Budgets',
+        to: '/epm/budgets',
+        icon: Package,
+        permissions: ['epm.budgets.view'],
+        module: 'epm',
       },
     ],
   },
   {
     items: [
-      {
-        label: 'Documents',
-        to: '/documents',
-        icon: Files,
-        area: 'documents',
-      },
       {
         label: 'Reports',
         to: '/reports',
         icon: BarChart3,
-        area: 'reports',
+        permissions: ['reports.organization.view'],
+      },
+      {
+        label: 'Access & roles',
+        to: '/settings/users',
+        icon: ShieldAlert,
+        permissions: ['access.roles.manage'],
       },
       {
         label: 'Settings',
         to: '/settings',
         icon: Settings,
-        area: 'settings',
+        permissions: ['settings.view', 'modules.configure'],
       },
     ],
   },
 ]
 
-export const settingsNav = [
-  { label: 'Organization', to: '/settings/organization' },
-  { label: 'Branding', to: '/settings/branding' },
-  { label: 'Departments', to: '/settings/departments' },
-  { label: 'Users & roles', to: '/settings/users' },
-]
+export interface Crumb {
+  label: string
+  href?: string
+}
+
+export function crumbsForPath(pathname: string): Crumb[] {
+  if (pathname.startsWith('/crm/opportunities')) {
+    return [{ label: 'CRM' }, { label: 'Opportunities' }]
+  }
+  if (pathname.startsWith('/erp/quotations')) {
+    return [{ label: 'ERP' }, { label: 'Quotations' }]
+  }
+  if (pathname.startsWith('/erp/purchasing')) {
+    return [{ label: 'ERP' }, { label: 'Purchasing' }]
+  }
+  if (pathname.startsWith('/scm/')) {
+    return [{ label: 'SCM' }, { label: 'Operations' }]
+  }
+  if (pathname.startsWith('/cx/')) return [{ label: 'CX' }, { label: 'Cases' }]
+  if (pathname.startsWith('/epm/')) return [{ label: 'EPM' }, { label: 'Budgets' }]
+  if (pathname.startsWith('/finance/')) {
+    return [{ label: 'Finance' }]
+  }
+  if (pathname.startsWith('/leave/request')) {
+    return [
+      { label: 'People', href: '/people/employees' },
+      { label: 'Request leave' },
+    ]
+  }
+  if (pathname.startsWith('/leave/mine')) {
+    return [{ label: 'People' }, { label: 'My leave' }]
+  }
+  if (pathname.startsWith('/leave/manager')) {
+    return [{ label: 'People' }, { label: 'Manager approvals' }]
+  }
+  if (pathname.startsWith('/leave/hr')) {
+    return [{ label: 'People' }, { label: 'HR verification' }]
+  }
+  if (pathname.startsWith('/leave/')) {
+    return [{ label: 'People' }, { label: 'Leave detail' }]
+  }
+  if (pathname.startsWith('/people')) {
+    return [{ label: 'People' }, { label: 'Employees' }]
+  }
+  if (pathname.startsWith('/calendar')) return [{ label: 'Calendar' }]
+  if (pathname.startsWith('/profile')) return [{ label: 'Profile' }]
+  if (pathname.startsWith('/settings')) return [{ label: 'Settings' }]
+  if (pathname.startsWith('/app')) return [{ label: 'Dashboard' }]
+  return [{ label: 'EMP' }]
+}

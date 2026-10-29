@@ -1,0 +1,194 @@
+SOLUTION OVERVIEW
+Enterprise Management
+Platform (EMP)
+One platform, built from separate services. Choose the ones
+your organization needs and add more as you grow.
+DOCUMENT TYPE Product & Solution Overview
+AUDIENCE Prospective clients, partners, stakeholders
+VERSION 2.0
+DATE October 2026
+01 The Problem
+Most organizations run on ten tools, not one: an HR system, a CRM, spreadsheets for
+projects, an inbox for support, and chat holding it together. Nothing talks to anything else,
+and every department sees a different, incomplete picture of the business.
+Fragmented data
+Employee, customer, and
+project records live in different
+tools that do not sync, so no one
+has a single trustworthy view.
+Rigid software
+Large suites force teams to
+reshape their process around
+the tool, and make you buy
+modules you will never use.
+Manual busywork
+Approvals and handoffs are
+chased by email and chat
+because no shared workflow
+drives them.
+The cost shows up as slow approvals, duplicated data entry, leadership without a cross-department view,
+and IT teams maintaining a stack of tools never designed to work together.
+Enterprise Management Platform (EMP) | Page 2 of 10
+02 The Solution
+EMP is a platform of separate services. You choose the ones you need, such as HR,
+CRM, partners, performance, projects, or service desk, and switch on more when the
+business is ready. Every service works on its own. When you use several together, they
+share the same people, the same organization structure, and the same permissions, so
+information is entered once and used everywhere.
+1
+SHARED CORE: USERS, ROLES,
+APPROVALS
+14
+SERVICES TO CHOOSE FROM
+You
+DECIDE WHICH ONES YOU USE
+Services connect automatically only when both are enabled. A client who buys CRM alone gets a complete
+CRM. A client who adds Service Desk later gets customer history on the same record, with no migration
+project.
+Enterprise Management Platform (EMP) | Page 3 of 10
+03 How It Works
+Every service follows the same four-step pattern: information is captured, governed by roles and
+permissions, automated through workflows, and surfaced in dashboards.
+1. CAPTURE
+Your services
+HR, CRM, Projects,
+Tickets...
+→
+2. GOVERN
+Roles & scope
+Who can see and do
+what
+→
+3. AUTOMATE
+Workflows
+Approvals, routing,
+alerts
+→
+4. SURFACE
+Dashboards
+Role-based, live data
+Example: an employee requests leave
+Leave follows the usual two-part rule: the person who knows the workload decides, and HR checks the
+policy.
+STEP WHO WHAT HAPPENS
+1 Employee Submits a leave request with dates and leave type.
+2 Head of
+Department
+Approves or rejects based on workload and team cover.
+3 HR Verifies balance and policy, then records the leave.
+4 System Updates the balance, team calendar, and dashboards, and notifies everyone
+involved. Task assignment views show the employee as away.
+Statutory leave such as sick or maternity leave skips the line decision: HR verifies and records it, and the
+Head of Department is informed. Nobody can approve their own request. Each organization can change
+these rules without code changes.
+Enterprise Management Platform (EMP) | Page 4 of 10
+04 The Services
+Services are grouped by what they help you do. Each can be adopted alone or combined.
+People & Work
+HR: employee records, recruitment, attendance, leave, training. Projects & Tasks: departments assign and
+track work. EPM (performance): objectives, KPIs, scorecards, and review cycles that connect company
+goals to individual work.
+Customers & Partners
+CRM: leads, customers, and a pipeline you configure. Service Desk: internal and external tickets with SLAs.
+PRM: vendors, suppliers, resellers, agreements, and a partner portal. CX: surveys and a complete customer
+view.
+Operations
+Sales, Procurement, Inventory, Logistics, Planning, Manufacturing, and Finance cover the order-to-
+cash and purchase-to-pay cycles, stock, production, and accounting. These services are on the roadmap
+and are added by client demand.
+Typical bundles
+BUNDLE SERVICES GOOD FOR
+People & Work HR, Projects, EPM Service firms, NGOs, government
+units
+Sales &
+Customers
+CRM, Service Desk, CX Sales-led and support-led businesses
+Partners &
+Suppliers
+PRM, Procurement Organizations with large vendor or
+reseller networks
+Distribution &
+Retail
+Sales, Procurement, Inventory, Logistics, Finance Traders, distributors, retailers
+Manufacturing Inventory, Manufacturing, Planning, Procurement,
+Sales, Finance, HR
+Producers
+Enterprise Management Platform (EMP) | Page 5 of 10
+Bundles are starting points. You can always add or remove individual services.
+Enterprise Management Platform (EMP) | Page 6 of 10
+05 Built Around Your Organization
+EMP mirrors the way your company is actually structured. Authority in the system follows the same chain
+as in real life, and you switch on only the levels you use.
+Board / Owners
+ |
+CEO / Managing Director
+ |-- Executive team
+ |-- Heads of Department
+ |     |-- Managers (optional)
+ |           |-- Team Leads (optional)
+ |                 \-- Employees, junior staff, interns
+ \-- HR (serves every department)
+WHO WHAT THEY DO IN EMP
+Administrator Sets up the organization, creates departments, appoints Heads of Department, chooses
+roles and services.
+Executives See organization-wide dashboards and performance against goals.
+Head of Department Creates projects and tasks, assigns work in their department, gives first approval on
+leave.
+HR Verifies and records leave, manages employee records, attendance, and recruitment.
+Employees Do assigned work, request leave, raise tickets, keep their own profile.
+Customers and
+partners
+See only their own tickets, agreements, and documents.
+Enterprise Management Platform (EMP) | Page 7 of 10
+06 Who It's For
+EMP is industry-agnostic. Services, roles, and workflows are configured per organization.
+Government Manufacturing & Logistics Healthcare & Education NGOs & Professional Services
+Financial Services Telecom Retail & Hospitality Agriculture Construction Technology
+LEADERSHIP
+One view of the organization
+Headcount, goals, projects, tickets, and pipeline in role-based dashboards instead of reports stitched from five
+tools.
+HR
+People processes without spreadsheets
+Recruitment, attendance, and leave with built-in routing and a full approval history.
+HEADS OF DEPARTMENT
+Assign work knowing who is available
+Tasks, team progress, and approved leave in one place.
+SALES AND CUSTOMER TEAMS
+The full customer relationship
+From first lead to support ticket on one record.
+ADMINISTRATORS
+Configure, don't customize
+Roles, workflows, branding, and services are admin settings, not engineering tickets.
+Enterprise Management Platform (EMP) | Page 8 of 10
+07 Why It's Different
+CAPABILITY SEPARATE POINTTOOLS TRADITIONAL ERPSUITE EMP
+Shared people, roles, and data across
+departments
+✕ ✓ ✓
+Buy only the services you need ✓ ✕ ✓
+Add services later without migrating data ✕ ✕ ✓
+Configurable to your process ✓ ✕ ✓
+No-code approvals and workflows ✕ ✕ ✓
+Authority mirrors your org chart ✕ ✓ ✓
+The result is the integration of a suite with the flexibility of separate tools, without paying for or learning
+what you do not use.
+Enterprise Management Platform (EMP) | Page 9 of 10
+08 Getting Started
+Choose your services. Start with one or two, or pick a bundle.
+Register the organization. An administrator provides the name, subdomain, and admin email. Setup
+of the workspace, default roles, and storage runs automatically.
+Build your structure. Create departments and appoint a Head of Department for each.
+Invite your team. Assign roles; each person sees only what their role allows.
+Configure the rules. Leave policy, sales pipeline stages, approval chains, and branding are settings,
+not projects.
+Add services as you grow. Switching one on keeps your existing data and connects it automatically.
+The services you need. The structure you already have.
+EMP grows with the organization, from a single service to the full suite.
+1. 
+2. 
+3. 
+4. 
+5. 
+6. 
+Enterprise Management Platform (EMP) | Page 10 of 10

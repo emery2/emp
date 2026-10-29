@@ -1,10 +1,10 @@
 # EMP — Enterprise Management Platform
 
-Multi-tenant SaaS frontend unifying HR, CRM, projects, ticketing, workflows, documents, and reporting. UI follows [`design.md`](./design.md) (SAP Analytics / Fiori Horizon flat surfaces).
+Integrated enterprise SaaS frontend spanning HCM, CRM, PRM, ERP, SCM/manufacturing, CX, EPM, and projects. UI follows [`design.md`](./design.md) (SAP Analytics / Fiori Horizon flat surfaces).
 
 ## Stack
 
-React 18 · Vite · TypeScript · Tailwind CSS · shadcn/ui-style primitives · React Query · React Router · Lucide · Recharts
+React 18 · Vite · TypeScript · Tailwind CSS · shadcn/ui-style primitives · React Query · React Router · Lucide · Recharts · Vitest
 
 ## Quick start
 
@@ -13,17 +13,47 @@ npm install
 npm run dev
 ```
 
-Open the URL Vite prints (usually `http://localhost:5173`).
-
-Public landing: `/` · App dashboard (after login): `/app`
+Public landing: `/` · App (after login): `/app` (role-specific dashboard redirect)
 
 ### Demo login
 
-1. Any demo email from the login form (default prefilled).
-2. Any password.
-3. MFA code: `123456`
+Password for **all** demo accounts: `password`
 
-Roles available via email: `ava.chen@norf.example` (Org Admin), `marcus.okonkwo@norf.example` (Dept Manager), `sofia.alvarez@norf.example` (Employee), `jordan.lee@norf.example` (Super Admin).
+Use the **Demo accounts** list on `/login`, ShellBar **Switch demo user**, and ShellBar **Organization** switcher (tenant branding).
+
+| Email | Role |
+|-------|------|
+| `board@norf.example` | Board Member |
+| `ceo@norf.example` | CEO / Executive |
+| `hod.eng@norf.example` | Head of Engineering |
+| `hod.sales@norf.example` | Head of Sales |
+| `finance@norf.example` | Finance Officer |
+| `hr@norf.example` | HR Officer |
+| `procurement@norf.example` | Procurement Officer |
+| `warehouse@norf.example` | Warehouse / Manufacturing |
+| `sales@norf.example` | Sales / Customer Service |
+| `crm@norf.example` | CRM / PRM / Project member |
+| `employee@norf.example` | Regular Employee |
+| `admin@norf.example` | System Administrator |
+| `auditor@norf.example` | Employee + HR permission overrides |
+
+### Functional demo paths
+
+**Leave (HCM)**  
+1. `employee@norf.example` → Request leave → submit  
+2. `hod.eng@norf.example` → Manager approvals → Approve  
+3. `hr@norf.example` → HR verification → Verify  
+
+**CRM → ERP quotation**  
+1. `sales@norf.example` → Opportunities → open `opp-100` (or create one) → Convert to ERP quotation  
+2. `finance@norf.example` → Quotations → Approve (Finance)  
+3. Sales can then **Mark sent to customer**
+
+Forbidden routes → `/access-denied`. Disabled modules (Settings → Modules) also deny module routes.
+
+## Security disclaimer
+
+**UI permission checks and module flags are prototype-only.** Production FastAPI must independently enforce every permission, module entitlement, and record-level scope.
 
 ## Scripts
 
@@ -31,13 +61,13 @@ Roles available via email: `ava.chen@norf.example` (Org Admin), `marcus.okonkwo@
 |---------|-------------|
 | `npm run dev` | Dev server |
 | `npm run build` | Typecheck + production build |
+| `npm test` | Vitest |
 | `npm run preview` | Preview production build |
 
 ## Architecture
 
-- `src/api` — React Query–backed query functions (swap for FastAPI later)
-- `src/mocks` — typed fixtures
-- `src/components/ui` — design-system primitives
-- `src/components/shared` — DataTable, KanbanBoard, StatCard, RoleGate, …
-- `src/features` — route pages by domain
-- Tokens live in `src/styles/globals.css` per `design.md`
+- `src/access` — permissions, roles, modules, evaluate, gates
+- `src/api` — React Query functions (FastAPI-ready boundaries)
+- `src/mocks` — org hierarchy, users, leave, commercial, modules, branding
+- `src/components/shared/workflow` — reusable approval timeline + actions
+- `src/features` — domain UIs (auth, dashboards, leave, crm, erp, settings, …)

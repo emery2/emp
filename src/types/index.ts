@@ -146,6 +146,10 @@ export interface OrgSettings {
 export interface BrandingSettings {
   primaryColor: string
   logoUrl?: string
+  /** Custom shell header line (org tagline / announcement) */
+  headerText?: string
+  /** Custom app footer line (legal / contact) */
+  footerText?: string
 }
 
 export interface OrgUser {

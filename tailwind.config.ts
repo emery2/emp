@@ -86,6 +86,13 @@ const config: Config = {
         },
         border: 'var(--border)',
         input: 'var(--input)',
+        landing: {
+          ink: 'var(--landing-ink)',
+          elevated: 'var(--landing-ink-elevated)',
+          muted: 'var(--landing-ink-muted)',
+          on: 'var(--landing-on-ink)',
+          'on-subtle': 'var(--landing-on-ink-subtle)',
+        },
       },
       borderRadius: {
         sm: 'var(--radius-sm)',

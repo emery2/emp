@@ -5,67 +5,45 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { demoUsers } from '@/mocks/users'
-import type { User } from '@/types'
-
-const SESSION_KEY = 'emp-session'
+import {
+  clearSession,
+  listDemoAccounts,
+  mockLogin,
+  mockSwitchUser,
+  readSessionUser,
+  writeSessionUser,
+} from '@/mocks/auth'
+import type { AppUser } from '@/types/access'
 
 interface AuthContextValue {
-  user: User | null
+  user: AppUser | null
   isAuthenticated: boolean
-  login: (email: string, password: string) => Promise<{ requiresMfa: boolean }>
-  completeMfa: (code: string) => Promise<void>
+  login: (email: string, password: string) => Promise<void>
+  switchDemoUser: (userId: string) => Promise<void>
   logout: () => void
-  pendingEmail: string | null
+  demoAccounts: AppUser[]
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
 
-function readSession(): User | null {
-  const raw = localStorage.getItem(SESSION_KEY)
-  if (!raw) return null
-  try {
-    return JSON.parse(raw) as User
-  } catch {
-    return null
-  }
-}
-
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(() => readSession())
-  const [pendingEmail, setPendingEmail] = useState<string | null>(null)
+  const [user, setUser] = useState<AppUser | null>(() => readSessionUser())
 
   const login = useCallback(async (email: string, password: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 400))
-    if (!password) {
-      throw new Error('Password is required')
-    }
-    const match =
-      demoUsers.find(
-        (item) => item.email.toLowerCase() === email.toLowerCase(),
-      ) ?? demoUsers[0]
-    setPendingEmail(match.email)
-    return { requiresMfa: true }
+    const next = await mockLogin(email, password)
+    writeSessionUser(next)
+    setUser(next)
   }, [])
 
-  const completeMfa = useCallback(
-    async (code: string) => {
-      await new Promise((resolve) => setTimeout(resolve, 300))
-      if (code.trim().length < 6) {
-        throw new Error('Enter the 6-digit verification code')
-      }
-      const match =
-        demoUsers.find((item) => item.email === pendingEmail) ?? demoUsers[0]
-      setUser(match)
-      localStorage.setItem(SESSION_KEY, JSON.stringify(match))
-      setPendingEmail(null)
-    },
-    [pendingEmail],
-  )
+  const switchDemoUser = useCallback(async (userId: string) => {
+    const next = await mockSwitchUser(userId)
+    writeSessionUser(next)
+    setUser(next)
+  }, [])
 
   const logout = useCallback(() => {
+    clearSession()
     setUser(null)
-    localStorage.removeItem(SESSION_KEY)
   }, [])
 
   const value = useMemo(
@@ -73,11 +51,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       user,
       isAuthenticated: Boolean(user),
       login,
-      completeMfa,
+      switchDemoUser,
       logout,
-      pendingEmail,
+      demoAccounts: listDemoAccounts(),
     }),
-    [user, login, completeMfa, logout, pendingEmail],
+    [user, login, switchDemoUser, logout],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

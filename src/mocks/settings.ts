@@ -16,6 +16,9 @@ export const orgSettings: OrgSettings = {
 
 export const brandingSettings: BrandingSettings = {
   primaryColor: '#0070F2',
+  logoUrl: '',
+  headerText: 'NORF Industries — Enterprise Management Platform',
+  footerText: '© NORF Industries GmbH · Confidential',
 }
 
 export const departments: Department[] = [

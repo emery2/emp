@@ -1,5 +1,7 @@
 # EMP Design System
 
+> Prefer `docs/design.md` as the canonical path. Keep this root file in sync when editing tokens or patterns.
+
 **Enterprise Management Platform (EMP)** — single source of truth for all UI decisions.
 
 Stack: React 18 + Vite + TypeScript, Tailwind CSS, shadcn/ui, React Query, React Router, Lucide icons.
@@ -52,7 +54,7 @@ EMP follows the interaction and surface grammar of **SAP Analytics Cloud (SAC)**
 | 2 | **Density with clarity** | Default table row height 40px; metadata in `text-muted`; KPI numbers large, labels caption-sized. |
 | 3 | **Progressive disclosure** | List → sheet → detail; advanced filters in a collapsible panel (Horizon “adapt filters”). |
 | 4 | **Token-only styling** | No raw hex in TSX; Tailwind maps to CSS variables; chart colors from named series tokens. |
-| 5 | **Role-aware chrome** | Nav and actions match RBAC; shell stays stable — content swaps via React Router `Outlet`. |
+| 5 | **Permission-aware chrome** | Nav and actions match the permission model; shell stays stable — content swaps via React Router `Outlet`. |
 
 ---
 
@@ -693,69 +695,61 @@ Every list view **must** implement all three states.
 | Contact / customer | `/customers/contacts/:id` |
 | Lead | `/customers/leads/:id` |
 
-Nav items the user cannot access are **hidden** (not disabled) unless partial access requires a disabled control with tooltip via `RoleGate mode="disable"`.
+Nav items the user cannot access are **hidden** (not disabled) unless partial access requires a disabled control with tooltip via `PermissionGate mode="disable"`.
 
 ---
 
-## 10. RBAC in the UI
+## 10. Access control (permissions) in the UI
 
-### Roles
+Client-side checks are **prototype-only**. Production FastAPI must enforce every permission and record scope.
 
-```ts
-type Role =
-  | 'super_admin'
-  | 'org_admin'
-  | 'dept_manager'
-  | 'supervisor'
-  | 'employee'
-  | 'external';
-```
-
-### Feature flags (mock)
+### Roles (Task 01)
 
 ```ts
-type FeatureFlag =
-  | 'crm.enabled'
-  | 'hr.leave'
-  | 'hr.attendance'
-  | 'automation.beta'
-  | 'reports.advanced';
+type RoleId =
+  | 'board_member'
+  | 'ceo_executive'
+  | 'head_of_department'
+  | 'hr_officer'
+  | 'crm_prm_project_member'
+  | 'regular_employee'
+  | 'system_administrator'
 ```
 
-### Access matrix
+### Permissions (selected)
 
-Legend: **F** = full, **S** = scoped (dept/team/self), **R** = read-only, **—** = hidden, **A** = admin settings.
+```ts
+type Permission =
+  | 'dashboard.board.view' | 'dashboard.executive.view' | 'dashboard.manager.view'
+  | 'dashboard.hr.view' | 'dashboard.employee.view' | 'dashboard.admin.view'
+  | 'employees.view' | 'leave.request' | 'leave.approve.department' | 'leave.verify.hr'
+  | 'crm.leads.view' | 'crm.leads.manage' | 'prm.partners.manage' | 'projects.manage'
+  | 'reports.organization.view' | 'access.roles.manage' | 'calendar.view' | 'settings.view'
+```
 
-| Area | Super Admin | Org Admin | Dept Manager | Supervisor | Employee | External |
-|------|-------------|-----------|--------------|------------|----------|----------|
-| Tenant switcher | F | — | — | — | — | — |
-| Dashboard | F | F | S | S | S | S |
-| People / Employees | F | F | S | S (team) | S (self) | — |
-| People / Leave | F | F | S | S (team) | S (own) | — |
-| People / Attendance | F | F | S | S (team) | S (own) | — |
-| Customers / Leads | F | F | R or S* | — | — | S* |
-| Customers / Contacts | F | F | R or S* | — | — | S* |
-| Customers / Pipeline | F | F | R or S* | — | — | — |
-| Work / Projects | F | F | S | S | S (assigned) | — |
-| Work / Tasks | F | F | S | S | S (assigned) | — |
-| Support / Tickets | F | F | S | S | S (assigned) | S* |
-| Automation | F | F | — | — | — | — |
-| Documents | F | F | S | S | S | S* |
-| Reports | F | F | S | R | — | — |
-| Settings / Org | A | A | — | — | — | — |
-| Settings / Branding | A | A | — | — | — | — |
-| Settings / Departments | A | A | R | — | — | — |
-| Settings / Users | A | A | — | — | — | — |
+Users resolve permissions from role defaults + optional custom roles + `permissionOverrides` grant/deny. Data scope is `org` | `department` | `self` via `getDataScope`.
 
-\* Scoped by feature flag and invitation / assignment.
+### Role → capability summary
+
+| Role | Primary dashboard | Notable permissions |
+|------|-------------------|---------------------|
+| Board Member | `/app/board` | Board dashboard, org reports |
+| CEO / Executive | `/app/executive` | Executive dashboard, employees, leads (view), reports |
+| Head of Department | `/app/manager` | Manager dashboard, employees, leave approve (dept) |
+| HR Officer | `/app/hr` | HR dashboard, employees, leave verify (+ approve), settings |
+| CRM / PRM / Project | `/app/employee` | Leave request, CRM/PRM/projects manage |
+| Regular Employee | `/app/employee` | Leave request, calendar |
+| System Administrator | `/app/admin` | Admin dashboard, access roles, settings, reports |
+
+CRM / PRM / Projects UIs beyond permission keys and nav stubs are deferred.
 
 ### UI behaviors
 
-1. **`RoleGate`** wraps nav items, page sections, and primary action buttons.
-2. **Feature flags:** if `false`, hide nav entry. If role lacks access but flag is on, hide. Optional “Coming soon” badge only when product intentionally shows a disabled module to admins.
-3. **Data scope** shown in `PageHeader` description when not org-wide, e.g. `Showing: Engineering department`.
-4. **ProtectedRoute:** unauthenticated → `/login`; authenticated but forbidden → `/` with toast or dedicated 403 empty state.
-5. Never show dead links. Prefer hide over disable; disable + tooltip when the control must remain visible for layout consistency.
+1. **`PermissionGate`** wraps page sections and primary actions (`hide` or `disable` + tooltip).
+2. **`RequirePermission`** wraps routes; forbidden → `/access-denied`.
+3. **Nav** is filtered by `hasAnyPermission` — never show dead links.
+4. **Data scope** can appear in `PageHeader` when not org-wide (e.g. department).
+5. **ProtectedRoute:** unauthenticated → `/login`. Prefer hide over disable; disable + tooltip when the control must remain visible.
 
 ---
 

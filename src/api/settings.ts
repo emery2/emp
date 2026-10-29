@@ -5,6 +5,10 @@ import {
   orgSettings,
   orgUsers,
 } from '@/mocks/settings'
+import {
+  readStoredBranding,
+  writeStoredBranding,
+} from '@/lib/branding-storage'
 import type {
   BrandingSettings,
   Department,
@@ -20,7 +24,10 @@ export const settingsKeys = {
 }
 
 let orgState = { ...orgSettings }
-let brandingState = { ...brandingSettings }
+let brandingState: BrandingSettings = {
+  ...brandingSettings,
+  ...(readStoredBranding() ?? {}),
+}
 
 export async function fetchOrgSettings(): Promise<OrgSettings> {
   await delay()
@@ -45,6 +52,7 @@ export async function updateBranding(
 ): Promise<BrandingSettings> {
   await delay()
   brandingState = { ...next }
+  writeStoredBranding(brandingState)
   return { ...brandingState }
 }
 

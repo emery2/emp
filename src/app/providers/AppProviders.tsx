@@ -5,29 +5,26 @@ import { router } from '@/app/router'
 import { queryClient } from '@/api/query-client'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { AuthProvider } from '@/hooks/useAuth'
-import { FeatureFlagsProvider } from '@/hooks/useFeatureFlags'
 import { TenantProvider } from '@/hooks/useTenant'
 
 export function AppProviders() {
   return (
     <QueryClientProvider client={queryClient}>
-      <FeatureFlagsProvider>
-        <AuthProvider>
-          <TenantProvider>
-            <TooltipProvider delayDuration={200}>
-              <RouterProvider router={router} />
-              <Toaster
-                position="top-right"
-                richColors={false}
-                closeButton
-                toastOptions={{
-                  className: 'bg-surface-elevated text-text-primary shadow-sm',
-                }}
-              />
-            </TooltipProvider>
-          </TenantProvider>
-        </AuthProvider>
-      </FeatureFlagsProvider>
+      <AuthProvider>
+        <TenantProvider>
+          <TooltipProvider delayDuration={200}>
+            <RouterProvider router={router} />
+            <Toaster
+              position="top-right"
+              richColors={false}
+              closeButton
+              toastOptions={{
+                className: 'bg-surface-elevated text-text-primary shadow-sm',
+              }}
+            />
+          </TooltipProvider>
+        </TenantProvider>
+      </AuthProvider>
     </QueryClientProvider>
   )
 }

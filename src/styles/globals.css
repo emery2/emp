@@ -61,6 +61,18 @@
 
     --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.08);
     --shadow-md: 0 4px 12px rgb(0 0 0 / 0.12);
+
+    /* Marketing landing (Oracle Applications–style structure; solid fills only) */
+    --landing-ink: #161513;
+    --landing-ink-elevated: #2a2826;
+    --landing-ink-muted: #a8a29e;
+    --landing-on-ink: #f5f5f4;
+    --landing-on-ink-subtle: #d6d3d1;
+
+    /* Marketing chrome (Salesforce.com-style nav tokens) */
+    --marketing-navy: #032d60;
+    --marketing-cloud: #0b5cab;
+    --marketing-cta: #2e844a;
   }
 
   * {

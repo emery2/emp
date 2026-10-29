@@ -8,7 +8,7 @@ import { DataTable } from '@/components/shared/DataTable'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { StatusBadge } from '@/components/shared/StatusBadge'
 import { Button } from '@/components/ui/button'
-import { roleLabels } from '@/lib/rbac'
+import { ROLE_DEFINITIONS, type RoleId } from '@/access/roles'
 import type { OrgUser, StatusBadgeVariant } from '@/types'
 
 const statusMap: Record<OrgUser['status'], StatusBadgeVariant> = {
@@ -30,7 +30,10 @@ export function UsersRolesPage() {
       {
         accessorKey: 'role',
         header: 'Role',
-        cell: ({ row }) => roleLabels[row.original.role],
+        cell: ({ row }) => {
+          const roleId = row.original.role as unknown as RoleId
+          return ROLE_DEFINITIONS[roleId]?.label ?? String(row.original.role)
+        },
       },
       { accessorKey: 'departmentName', header: 'Department' },
       {

@@ -9,7 +9,7 @@ import { CollectionToolbar } from '@/components/shared/CollectionToolbar'
 import { DataTable } from '@/components/shared/DataTable'
 import { FilterBar } from '@/components/shared/FilterBar'
 import { PageHeader } from '@/components/shared/PageHeader'
-import { RoleGate } from '@/components/shared/RoleGate'
+import { PermissionGate } from '@/access/guards'
 import { StatusBadge } from '@/components/shared/StatusBadge'
 import { ChartView } from '@/components/shared/views/ChartView'
 import { CustomViewStub } from '@/components/shared/views/CustomViewStub'
@@ -168,11 +168,11 @@ export function EmployeeListPage() {
         title="Employees"
         description="People directory across departments."
         actions={
-          <RoleGate roles={['super_admin', 'org_admin', 'dept_manager']}>
+          <PermissionGate permission="employees.view">
             <Button onClick={() => toast.message('Add employee coming soon')}>
               Add employee
             </Button>
-          </RoleGate>
+          </PermissionGate>
         }
       />
       <FilterBar
