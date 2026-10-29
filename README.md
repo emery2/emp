@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # EMP — Enterprise Management Platform
 
 Integrated enterprise SaaS frontend spanning HCM, CRM, PRM, ERP, SCM/manufacturing, CX, EPM, and projects. UI follows [`design.md`](./design.md) (SAP Analytics / Fiori Horizon flat surfaces).
@@ -71,3 +72,6 @@ Forbidden routes → `/access-denied`. Disabled modules (Settings → Modules) a
 - `src/mocks` — org hierarchy, users, leave, commercial, modules, branding
 - `src/components/shared/workflow` — reusable approval timeline + actions
 - `src/features` — domain UIs (auth, dashboards, leave, crm, erp, settings, …)
+=======
+# emp
+>>>>>>> 0317fafc31b1bb73bf03edbd2d13073c6215d801
