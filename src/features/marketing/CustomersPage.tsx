@@ -6,7 +6,7 @@ export function CustomersPage() {
   return (
     <main>
       <section className="border-b border-divider bg-surface">
-        <div className="mx-auto max-w-7xl px-4 py-14 md:px-8 md:py-20">
+        <div className="marketing-container py-16 md:py-24">
           <p className="text-overline uppercase tracking-wide text-primary">
             Customers
           </p>
@@ -21,7 +21,7 @@ export function CustomersPage() {
       </section>
 
       <section className="bg-background">
-        <div className="mx-auto max-w-7xl space-y-6 px-4 py-14 md:px-8">
+        <div className="marketing-container space-y-6 py-16">
           {customerStories.map((story) => (
             <article key={story.name} className="bg-surface p-8 md:p-10">
               <p className="text-sm font-semibold text-primary">{story.focus}</p>

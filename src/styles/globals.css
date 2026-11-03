@@ -25,7 +25,12 @@
     --info: #0070f2;
     --info-subtle: #edf6ff;
     --ring: #0070f2;
-    --sidebar-bg: #ffffff;
+    --sidebar-bg: #0d2033;
+    --sidebar-header: #07182a;
+    --sidebar-foreground: #f4f6f8;
+    --sidebar-muted: #9aa8b8;
+    --sidebar-hover: #16324a;
+    --sidebar-item-active: #1b4f72;
     --sidebar-active: #ebf5fe;
     --sidebar-active-accent: #0070f2;
     --chart-1: #0070f2;
@@ -69,10 +74,14 @@
     --landing-on-ink: #f5f5f4;
     --landing-on-ink-subtle: #d6d3d1;
 
-    /* Marketing chrome (Salesforce.com-style nav tokens) */
-    --marketing-navy: #032d60;
-    --marketing-cloud: #0b5cab;
-    --marketing-cta: #2e844a;
+    /* Marketing chrome (Anaplan-style) */
+    --marketing-navy: #05192d;
+    --marketing-ink: #0d2033;
+    --marketing-cloud: #2d4a8c;
+    --marketing-accent: #ff6a00;
+    --marketing-cta: #05192d;
+    --marketing-hero-from: #f9f7f2;
+    --marketing-hero-to: #6b73b8;
   }
 
   * {
@@ -80,7 +89,19 @@
   }
 
   html {
-    font-size: 14px;
+    font-size: 16px;
+  }
+
+  @media (min-width: 1536px) {
+    html {
+      font-size: 17px;
+    }
+  }
+
+  @media (min-width: 1920px) {
+    html {
+      font-size: 18px;
+    }
   }
 
   body {
@@ -103,18 +124,13 @@
   }
 }
 
-@layer utilities {
-  @keyframes fade-up {
-    from {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+@layer components {
+  .marketing-container {
+    @apply mx-auto w-full max-w-[160rem] px-5 sm:px-8 lg:px-12 xl:px-16 2xl:px-20;
   }
+}
 
+@layer utilities {
   @keyframes grow-bar {
     from {
       transform: scaleY(0);
@@ -123,6 +139,15 @@
     to {
       transform: scaleY(1);
       transform-origin: bottom;
+    }
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
     }
   }
 }

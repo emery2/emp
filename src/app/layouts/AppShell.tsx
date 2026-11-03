@@ -30,14 +30,14 @@ function ShellFrame() {
           <SideNavigation />
         </div>
         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-          <SheetContent side="left" className="w-72 p-0">
+          <SheetContent side="left" className="w-72 bg-sidebar p-0">
             <SideNavigation onNavigate={() => setMobileOpen(false)} />
           </SheetContent>
         </Sheet>
         <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
           <main
             id="main-content"
-            className="min-h-0 flex-1 overflow-auto bg-background p-4 md:p-6"
+            className="min-h-0 flex-1 overflow-auto bg-[#f5f8fa] p-3 md:p-4 lg:p-5"
           >
             <Outlet />
           </main>

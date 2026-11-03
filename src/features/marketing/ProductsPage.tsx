@@ -6,7 +6,7 @@ export function ProductsPage() {
   return (
     <main>
       <section className="border-b border-divider bg-surface">
-        <div className="mx-auto max-w-7xl px-4 py-12 md:px-8 md:py-16">
+        <div className="marketing-container py-14 md:py-20">
           <p className="text-overline uppercase tracking-wide text-primary">
             Products
           </p>

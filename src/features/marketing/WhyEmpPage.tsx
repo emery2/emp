@@ -6,7 +6,7 @@ export function WhyEmpPage() {
   return (
     <main>
       <section className="border-b border-divider bg-surface">
-        <div className="mx-auto max-w-7xl px-4 py-14 md:px-8 md:py-20">
+        <div className="marketing-container py-16 md:py-24">
           <p className="text-overline uppercase tracking-wide text-primary">
             Why EMP
           </p>
@@ -22,7 +22,7 @@ export function WhyEmpPage() {
       </section>
 
       <section className="bg-background">
-        <div className="mx-auto max-w-7xl px-4 py-14 md:px-8">
+        <div className="marketing-container py-16">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {whyPillars.map((pillar) => (
               <article key={pillar.title} className="bg-surface p-8">

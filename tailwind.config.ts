@@ -44,6 +44,11 @@ const config: Config = {
         ring: 'var(--ring)',
         sidebar: {
           DEFAULT: 'var(--sidebar-bg)',
+          header: 'var(--sidebar-header)',
+          foreground: 'var(--sidebar-foreground)',
+          muted: 'var(--sidebar-muted)',
+          hover: 'var(--sidebar-hover)',
+          'item-active': 'var(--sidebar-item-active)',
           active: 'var(--sidebar-active)',
           accent: 'var(--sidebar-active-accent)',
         },

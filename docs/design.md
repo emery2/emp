@@ -115,7 +115,7 @@ All values are exact hex. Components use Tailwind semantic classes that resolve 
 | Token | Hex | Usage |
 |-------|-----|--------|
 | `background` | `#F5F6F7` | App canvas (Horizon shell background) |
-| `surface` | `#FFFFFF` | Tiles, tables, sidebar, shell bar |
+| `surface` | `#FFFFFF` | Tiles, tables, shell bar |
 | `surface-hover` | `#EBEBEB` | Table row hover, nav hover, filled inputs |
 | `surface-elevated` | `#FFFFFF` | Dialog / popover (float via shadow only) |
 | `divider` | `#D9D9D9` | Shell bottom, table header rule, section separators |
@@ -134,8 +134,13 @@ All values are exact hex. Components use Tailwind semantic classes that resolve 
 | `info` | `#0070F2` | Informational (same as primary) |
 | `info-subtle` | `#EDF6FF` | Info badge bg |
 | `ring` | `#0070F2` | Focus ring (2px solid, no offset glow) |
-| `sidebar-bg` | `#FFFFFF` | Side navigation panel |
-| `sidebar-active` | `#EBF5FE` | Active nav item fill |
+| `sidebar-bg` | `#0D2033` | Side navigation menu + collapse |
+| `sidebar-header` | `#07182A` | Sidebar brand/org block, slightly darker than the menu |
+| `sidebar-foreground` | `#F4F6F8` | Primary text on sidebar |
+| `sidebar-muted` | `#9AA8B8` | Group labels and secondary text on sidebar |
+| `sidebar-hover` | `#16324A` | Nav item hover / collapse hover |
+| `sidebar-item-active` | `#1B4F72` | Active nav item fill |
+| `sidebar-active` | `#EBF5FE` | Content accent fill (tables, chips) |
 | `sidebar-active-accent` | `#0070F2` | 3px left bar on active item (only accent stroke in chrome) |
 | `chart-grid` | `#E5E5E5` | Chart gridlines |
 | `disabled` | `#A9B4BE` | Disabled control chrome |
@@ -286,7 +291,7 @@ Never use multi-layer or colored shadows. Never elevate tiles.
 ├──────────────┬──────────────────────────────────────────────┤
 │ SideNav      │ Content canvas (background)                  │
 │ 256 / 64     │  ┌────────────────────────────────────────┐  │
-│ surface      │  │ PageHeader / tiles / table             │  │
+│ sidebar-bg   │  │ PageHeader / tiles / table             │  │
 │              │  │ <Outlet />                             │  │
 │              │  └────────────────────────────────────────┘  │
 └──────────────┴──────────────────────────────────────────────┘
@@ -297,7 +302,7 @@ Never use multi-layer or colored shadows. Never elevate tiles.
 | Region | Spec |
 |--------|------|
 | **ShellBar** | Full width, `surface`, `border-b` `divider`, height 52px. Left: product name + current module title. Right: global search, tenant switcher, calendar shortcut (`CalendarDays`), user menu. |
-| **SideNavigation** | Left, `sidebar-bg` / `surface`, **no right border** — canvas contrast separates. Grouped items. Active: `sidebar-active` fill + 3px `sidebar-active-accent` left bar. Collapse to icon-only 64px. Footer: Settings shortcut. |
+| **SideNavigation** | Left, `sidebar-bg` (navy, distinct from canvas), **no right border**. Brand block uses `sidebar-header`. Grouped items. Hover: `sidebar-hover`. Active: `sidebar-item-active` fill + 3px `sidebar-active-accent` left bar. Collapse to icon-only 64px. Footer: collapse control on the same panel. |
 | **Content canvas** | `background`, scrollable. Dashboard: padded tile grid. Lists: full-bleed table on `surface`. |
 
 React: `AppShell` wraps `<Outlet />`. Sidebar collapsed state in React context + `localStorage` key `emp-sidebar-collapsed`.
