@@ -13,7 +13,7 @@ export function MarketingStubPage({
   return (
     <main>
       <section className="border-b border-divider bg-surface">
-        <div className="mx-auto max-w-7xl px-4 py-14 md:px-8 md:py-20">
+        <div className="marketing-container py-16 md:py-24">
           <p className="text-overline uppercase tracking-wide text-primary">
             {eyebrow}
           </p>

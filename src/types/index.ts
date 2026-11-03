@@ -177,6 +177,31 @@ export interface ChartPoint {
   value: number
 }
 
+export interface NamedCount {
+  label: string
+  value: number
+  color?: string
+}
+
+export interface StackedActivityPoint {
+  label: string
+  call: number
+  meeting: number
+  task: number
+}
+
+export interface CrmOverviewData {
+  newContactsThisMonth: number
+  contactsAddedOverTime: ChartPoint[]
+  contactSources: ChartPoint[]
+  dealsCreatedOverTime: ChartPoint[]
+  dealsByStage: NamedCount[]
+  activityBreakdown: NamedCount[]
+  teamActivity: StackedActivityPoint[]
+  openTickets: number
+  ticketStatuses: NamedCount[]
+}
+
 export interface PaginatedResult<T> {
   data: T[]
   total: number

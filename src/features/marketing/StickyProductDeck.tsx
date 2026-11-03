@@ -104,7 +104,7 @@ export function StickyProductDeck() {
       className="border-b border-divider bg-[#eef4fb]"
       aria-label="Product suite"
     >
-      <div className="mx-auto max-w-[90rem] px-4 py-12 md:px-8 md:py-16">
+      <div className="marketing-container py-16 md:py-20">
         <div className="mb-10 max-w-2xl">
           <h2 className="text-3xl font-bold tracking-tight text-[var(--marketing-navy)] md:text-4xl">
             See what is possible when every part of your business works together
@@ -160,7 +160,7 @@ export function StickyProductDeck() {
                     'motion-reduce:static motion-reduce:mb-6',
                   )}
                   style={{
-                    top: '5.75rem',
+                    top: '5rem',
                     zIndex: index + 1,
                     marginBottom: index === deckCards.length - 1 ? 0 : '2.5rem',
                   }}

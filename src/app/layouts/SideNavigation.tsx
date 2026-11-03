@@ -22,13 +22,13 @@ export function SideNavigation({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <aside
       className={cn(
-        'flex h-full flex-col bg-sidebar text-text-primary',
+        'flex h-full flex-col bg-sidebar text-sidebar-foreground',
         collapsed ? 'w-16' : 'w-64',
       )}
     >
       <div
         className={cn(
-          'flex h-shell items-center gap-3 px-3',
+          'flex h-shell items-center gap-3 border-b border-sidebar-hover bg-sidebar-header px-3',
           collapsed && 'justify-center',
         )}
       >
@@ -42,14 +42,14 @@ export function SideNavigation({ onNavigate }: { onNavigate?: () => void }) {
             )}
           />
         ) : (
-          <div className="flex h-8 w-8 items-center justify-center bg-sidebar-active text-xs font-bold text-primary">
+          <div className="flex h-8 w-8 items-center justify-center bg-sidebar-item-active text-xs font-bold text-sidebar-foreground">
             {organization.name.slice(0, 2).toUpperCase()}
           </div>
         )}
         {!collapsed ? (
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold">{organization.name}</p>
-            <p className="truncate text-xs text-text-muted">EMP</p>
+            <p className="truncate text-xs text-sidebar-muted">EMP</p>
           </div>
         ) : null}
       </div>
@@ -65,7 +65,7 @@ export function SideNavigation({ onNavigate }: { onNavigate?: () => void }) {
             return (
               <div key={group.label ?? `group-${groupIndex}`}>
                 {group.label && !collapsed ? (
-                  <p className="mb-1 px-2 text-overline uppercase tracking-wide text-text-muted">
+                  <p className="mb-1 px-2 text-overline uppercase tracking-wide text-sidebar-muted">
                     {group.label}
                   </p>
                 ) : null}
@@ -81,9 +81,9 @@ export function SideNavigation({ onNavigate }: { onNavigate?: () => void }) {
                           title={collapsed ? item.label : undefined}
                           className={({ isActive }) =>
                             cn(
-                              'relative flex items-center gap-3 rounded-none px-3 py-2 text-sm font-medium text-text-secondary hover:bg-surface-hover hover:text-text-primary',
+                              'relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-sidebar-muted hover:bg-sidebar-hover hover:text-sidebar-foreground',
                               isActive &&
-                                'bg-sidebar-active text-text-primary before:absolute before:inset-y-0 before:left-0 before:w-[3px] before:bg-sidebar-accent',
+                                'bg-sidebar-item-active text-sidebar-foreground shadow-sm',
                               collapsed && 'justify-center px-0',
                             )
                           }
@@ -100,11 +100,11 @@ export function SideNavigation({ onNavigate }: { onNavigate?: () => void }) {
           })}
         </nav>
       </ScrollArea>
-      <div className="border-t border-divider p-2">
+      <div className="border-t border-sidebar-hover p-2">
         <Button
           variant="ghost"
           size={collapsed ? 'icon' : 'sm'}
-          className="w-full justify-center"
+          className="w-full justify-center text-sidebar-foreground hover:bg-sidebar-hover hover:text-sidebar-foreground"
           onClick={toggleCollapsed}
           aria-label={collapsed ? 'Expand navigation' : 'Collapse navigation'}
         >

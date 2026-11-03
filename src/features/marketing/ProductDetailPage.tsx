@@ -18,7 +18,7 @@ export function ProductDetailPage() {
   return (
     <main>
       <section className="border-b border-divider bg-surface">
-        <div className="mx-auto max-w-7xl px-4 py-14 md:px-8 md:py-20">
+        <div className="marketing-container py-16 md:py-24">
           <p className="text-overline uppercase tracking-wide text-primary">
             Product
           </p>
@@ -51,7 +51,7 @@ export function ProductDetailPage() {
       </section>
 
       <section className="border-b border-divider bg-background">
-        <div className="mx-auto max-w-7xl px-4 py-14 md:px-8">
+        <div className="marketing-container py-16">
           <h2 className="text-2xl font-bold">What you get</h2>
           <ul className="mt-6 grid grid-cols-1 gap-3 md:grid-cols-2">
             {product.bullets.map((bullet) => (
@@ -71,7 +71,7 @@ export function ProductDetailPage() {
       </section>
 
       <section className="bg-surface">
-        <div className="mx-auto max-w-7xl px-4 py-14 md:px-8">
+        <div className="marketing-container py-16">
           <h2 className="text-2xl font-bold">Explore other applications</h2>
           <div className="mt-6 flex flex-wrap gap-2">
             {others.map((item) => (
