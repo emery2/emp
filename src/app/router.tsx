@@ -1,5 +1,6 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom'
 import { RequirePermission } from '@/access/guards'
+import { RequireFeature } from '@/access/feature-gate'
 import { RequireModule } from '@/access/module-gate'
 import { AppShell } from '@/app/layouts/AppShell'
 import { AuthLayout } from '@/app/layouts/AuthLayout'
@@ -45,15 +46,20 @@ import { LeaveRequestPage } from '@/features/leave/LeaveRequestPage'
 import { EmployeeDetailPage } from '@/features/people/EmployeeDetailPage'
 import { EmployeeListPage } from '@/features/people/EmployeeListPage'
 import { PlaceholderPage } from '@/features/placeholders/PlaceholderPage'
+import { ProfileChangeDetailPage } from '@/features/profile/ProfileChangeDetailPage'
+import { ProfileHrQueuePage } from '@/features/profile/ProfileHrQueuePage'
 import { ProfilePage } from '@/features/profile/ProfilePage'
 import { BrandingPage } from '@/features/settings/BrandingPage'
 import { DepartmentsPage } from '@/features/settings/DepartmentsPage'
+import { FeatureConfigPage } from '@/features/settings/FeatureConfigPage'
+import { FeatureEntitlementsPage } from '@/features/settings/FeatureEntitlementsPage'
 import { ModulesPage } from '@/features/settings/ModulesPage'
 import { OrganizationPage } from '@/features/settings/OrganizationPage'
 import { SettingsLayout } from '@/features/settings/SettingsLayout'
 import { UsersRolesPage } from '@/features/settings/UsersRolesPage'
 import { AccessDeniedPage } from '@/features/system/AccessDeniedPage'
 import { NotFoundPage } from '@/features/system/NotFoundPage'
+import { PlanUnavailablePage } from '@/features/system/PlanUnavailablePage'
 
 export const router = createBrowserRouter([
   {
@@ -143,7 +149,7 @@ export const router = createBrowserRouter([
             children: [{ path: '/calendar', element: <CalendarPage /> }],
           },
           {
-            element: <RequireModule moduleId="hcm" />,
+            element: <RequireModule moduleId="hr" />,
             children: [
               {
                 element: <RequirePermission permission="employees.view" />,
@@ -156,39 +162,82 @@ export const router = createBrowserRouter([
                 ],
               },
               {
-                element: <RequirePermission permission="leave.request" />,
-                children: [
-                  { path: '/leave/request', element: <LeaveRequestPage /> },
-                  { path: '/leave/mine', element: <LeaveHistoryPage /> },
-                ],
-              },
-              {
-                element: (
-                  <RequirePermission permission="leave.approve.department" />
-                ),
+                element: <RequireFeature featureKey="hr.leave" />,
                 children: [
                   {
-                    path: '/leave/manager',
-                    element: <LeaveManagerQueuePage />,
+                    element: <RequirePermission permission="leave.request" />,
+                    children: [
+                      { path: '/leave/request', element: <LeaveRequestPage /> },
+                      { path: '/leave/mine', element: <LeaveHistoryPage /> },
+                    ],
+                  },
+                  {
+                    element: (
+                      <RequirePermission permission="leave.approve.department" />
+                    ),
+                    children: [
+                      {
+                        path: '/leave/manager',
+                        element: <LeaveManagerQueuePage />,
+                      },
+                    ],
+                  },
+                  {
+                    element: (
+                      <RequirePermission permission="leave.verify.hr" />
+                    ),
+                    children: [
+                      { path: '/leave/hr', element: <LeaveHrQueuePage /> },
+                    ],
+                  },
+                  {
+                    element: (
+                      <RequirePermission
+                        permissions={[
+                          'leave.request',
+                          'leave.approve.department',
+                          'leave.verify.hr',
+                        ]}
+                      />
+                    ),
+                    children: [
+                      { path: '/leave/:id', element: <LeaveDetailPage /> },
+                    ],
                   },
                 ],
               },
               {
-                element: <RequirePermission permission="leave.verify.hr" />,
-                children: [{ path: '/leave/hr', element: <LeaveHrQueuePage /> }],
-              },
-              {
                 element: (
-                  <RequirePermission
-                    permissions={[
-                      'leave.request',
-                      'leave.approve.department',
-                      'leave.verify.hr',
-                    ]}
-                  />
+                  <RequireFeature featureKey="hr.profile_self_service" />
                 ),
                 children: [
-                  { path: '/leave/:id', element: <LeaveDetailPage /> },
+                  {
+                    element: (
+                      <RequirePermission permission="profile.approve.hr" />
+                    ),
+                    children: [
+                      {
+                        path: '/profile/hr-queue',
+                        element: <ProfileHrQueuePage />,
+                      },
+                    ],
+                  },
+                  {
+                    element: (
+                      <RequirePermission
+                        permissions={[
+                          'profile.edit.self',
+                          'profile.approve.hr',
+                        ]}
+                      />
+                    ),
+                    children: [
+                      {
+                        path: '/profile/changes/:id',
+                        element: <ProfileChangeDetailPage />,
+                      },
+                    ],
+                  },
                 ],
               },
             ],
@@ -451,6 +500,8 @@ export const router = createBrowserRouter([
                   'settings.view',
                   'access.roles.manage',
                   'modules.configure',
+                  'features.entitle',
+                  'features.configure',
                 ]}
               />
             ),
@@ -482,12 +533,35 @@ export const router = createBrowserRouter([
                       { path: 'modules', element: <ModulesPage /> },
                     ],
                   },
+                  {
+                    element: (
+                      <RequirePermission permission="features.entitle" />
+                    ),
+                    children: [
+                      {
+                        path: 'feature-entitlements',
+                        element: <FeatureEntitlementsPage />,
+                      },
+                    ],
+                  },
+                  {
+                    element: (
+                      <RequirePermission permission="features.configure" />
+                    ),
+                    children: [
+                      {
+                        path: 'feature-config',
+                        element: <FeatureConfigPage />,
+                      },
+                    ],
+                  },
                 ],
               },
             ],
           },
           { path: '/profile', element: <ProfilePage /> },
           { path: '/access-denied', element: <AccessDeniedPage /> },
+          { path: '/plan-unavailable', element: <PlanUnavailablePage /> },
           { path: '*', element: <NotFoundPage /> },
         ],
       },

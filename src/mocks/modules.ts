@@ -1,37 +1,36 @@
+/**
+ * @deprecated Prefer `mockEntitlementsRepository` with an explicit tenantId.
+ * These helpers read the current Shell tenant from localStorage for legacy call sites.
+ */
 import type { ModuleId } from '@/access/modules'
-import { MODULE_IDS } from '@/access/modules'
+import { mockEntitlementsRepository } from '@/shared/repositories/entitlements-repository'
 
-const STORAGE_KEY = 'emp-enabled-modules-v1'
-
-const defaultEnabled: ModuleId[] = [...MODULE_IDS]
-
-function readStored(): ModuleId[] | null {
+function currentTenantId(): string {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) return null
-    const parsed = JSON.parse(raw) as string[]
-    return parsed.filter((id): id is ModuleId =>
-      (MODULE_IDS as readonly string[]).includes(id),
-    )
+    return localStorage.getItem('emp-tenant') ?? 'tenant-norf'
   } catch {
-    return null
+    return 'tenant-norf'
   }
 }
 
-let enabledModules: ModuleId[] = readStored() ?? [...defaultEnabled]
-
 export function listEnabledModules(): ModuleId[] {
-  return [...enabledModules]
+  return mockEntitlementsRepository.listModules(currentTenantId())
 }
 
 export function isModuleEnabled(moduleId: ModuleId): boolean {
-  return enabledModules.includes(moduleId)
+  return mockEntitlementsRepository.isModuleEnabled(currentTenantId(), moduleId)
 }
 
 export function setEnabledModules(next: ModuleId[]): ModuleId[] {
-  enabledModules = next.filter((id) =>
-    (MODULE_IDS as readonly string[]).includes(id),
-  )
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(enabledModules))
+  mockEntitlementsRepository.setModules(currentTenantId(), next, 'legacy')
   return listEnabledModules()
+}
+
+export function isFeatureEnabled(
+  featureKey: import('@/modules/feature-keys').FeatureKey,
+): boolean {
+  return mockEntitlementsRepository.isFeatureEffectivelyEnabled(
+    currentTenantId(),
+    featureKey,
+  )
 }

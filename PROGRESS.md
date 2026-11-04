@@ -1,54 +1,74 @@
 # EMP Frontend Progress
 
-Last updated: 2026-10-28 (ingested PRD v3.1 + Brief/Overview PDFs)
+Last updated: 2026-11-03 (F2 — profile self-service)
 
 ## Source of truth
 
 | Doc | Location |
 |-----|----------|
-| PRD v3.1 | `docs/PRD.md` (+ PDF `docs/source/EMP_PRD_v3.1.pdf`) |
+| PRD v3.1 | `docs/PRD.md` |
 | Design | `docs/design.md` |
-| Module packaging | `docs/MODULE_MODEL.md` (synced to PRD §04) |
-| Project Brief v2.0 | `docs/PROJECT_BRIEF.md` + `docs/source/` |
-| Solution Overview v2.0 | `docs/SOLUTION_OVERVIEW.md` + `docs/source/` |
+| Module packaging | `docs/MODULE_MODEL.md` |
 | Server enforcement | `docs/SERVER_ENFORCEMENT.md` |
 
-## Milestone table
+**Conflict rule:** PRD wins on existing behavior. MODULE_MODEL wins on packaging. F-series prompt wins on goals/evals/profile/signatures/feature customisation.
+
+---
+
+## Milestone table — F-series
 
 | ID | Name | Status | Date | Notes |
 |----|------|--------|------|-------|
-| M0 | Audit + docs scaffold | **Done** | 2026-10-27 | |
-| Docs sync | PRD 3.1 + Brief + Overview imported | **Done** | 2026-10-28 | |
-| **X0** | Confirm open decisions §25 (esp. #7–9) + quarantine map | **Not started** | — | Optional short gate |
-| **X1** | Manifests, entitlements, toggles, not-available screen, contracts, import-boundary test, DEV demo label, `can()` skeleton | **Not started** | — | = Phase 1 entitlement slice |
-| X2 | Org: depts, HoD appointment, PRD roles, hierarchy flags | Not started | — | |
-| X3 | HR core | Not started | — | |
-| X4 | Leave PRD §08 | Not started | — | |
-| X5 | CRM | Not started | — | |
-| … | Projects, Service Desk, PRM, EPM, Workflow | Not started | — | Per Brief phasing |
-| Ops | Finance/Sales/… | Blocked | — | Need PRD addendum (Brief + PRD Phase 5) |
-| X10 | Bundles + composed dashboards | Not started | — | |
-| X11 | Module combination matrix tests | Not started | — | |
+| **F0** | Audit | **Done** | 2026-11-03 | |
+| **F1** | Feature framework + entitlements | **Done** | 2026-11-03 | |
+| **F2** | Profile self-service + HR approval + sensitivity | **Done** | 2026-11-03 | Direct / needs approval / locked; HR Head for HR staff |
+| **F3** | Employee goal setting + HoD approval + locking | Not started | — | |
+| **F4** | Evaluation cycles + appeal | Not started | — | |
+| **F5** | Digital signatures | Not started | — | |
+| **F6** | Integration + hardening | Not started | — | |
 
-## Decisions locked by PRD v3.1 / Brief
+---
 
-| Topic | Decision |
-|-------|----------|
-| Packaging | Separately chosen services; core always on |
-| EPM budgets | Only when Finance entitled |
-| Ops services | Planned; **addendum before build** |
-| Pricing/billing | Out of scope (flags only) |
-| Party model | Core owns Party; modules add profiles |
-| First product | HR + CRM after foundation |
+## F2 delivered
 
-## Known limitations (codebase)
+- Employee profile records (tenant-scoped) + change requests + immutable field history.
+- Sensitivity from `hr.profile_self_service` config; submit splits direct vs approval; locked rejected.
+- HR queue + side-by-side review; approve / reject (reason) / return; withdraw by requester.
+- HR officer changes assign to **HR Head** (`user-hr-head` / `hr_head` role); no self-approval.
+- Requests freeze `configVersionId` at submit; approve applies under that snapshot.
+- Routes: `/profile` (self-service panel), `/profile/hr-queue`, `/profile/changes/:id` behind feature gate.
+- Permissions: `profile.edit.self`, `profile.approve.hr`.
+- Tests: sensitivity split, transitions, SoD, tenant isolation, feature-off, config version retain.
 
-- Legacy roles / ERP-ish UI still present; quarantine until X1 entitlements + later Sales module.  
-- No manifests / Party / import-boundary test yet.  
-- Leave statuses ≠ PRD names.  
-- RTL Testing Library not installed.
+### F2 verification
+
+| Command | Result |
+|---------|--------|
+| `npm run test` | **Pass** — 8 files, **52** tests |
+| `npm run lint` | **Pass** (existing warnings) |
+| `npm run build` | **Pass** |
+
+---
+
+## Try it
+
+1. `employee@norf.example` → Profile → change phone (direct) + legal name (approval).
+2. `hr@norf.example` → Profile approvals → approve/reject.
+3. As HR, submit own legal name change → appears for `hr.head@norf.example` only.
+
+Password for all demo users: `password`.
+
+---
+
+## Known limitations
+
+- Attachment is filename mock only (no upload binary).
+- Not all demo users have rich seed profiles (auto-created empty shell if missing).
+- HR “notified” on direct edits is audit-history only (no notification center write).
+- Leave status names still ≠ PRD.
+
+---
 
 ## Next increment
 
-**Awaiting your go on X0 or X1.**  
-Recommended: **X1** (entitlement platform) unless you want X0 only to tick open decisions #7–9 first.
+**Awaiting go on F3** (goal setting with HoD approval and locking).

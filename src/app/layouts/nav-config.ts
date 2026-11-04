@@ -23,6 +23,7 @@ import {
 } from 'lucide-react'
 import type { ModuleId } from '@/access/modules'
 import type { Permission } from '@/access/permissions'
+import type { FeatureKey } from '@/modules/feature-keys'
 
 export interface NavItem {
   label: string
@@ -30,6 +31,7 @@ export interface NavItem {
   icon: LucideIcon
   permissions: Permission[]
   module?: ModuleId
+  feature?: FeatureKey
 }
 
 export interface NavGroup {
@@ -64,42 +66,54 @@ export const navGroups: NavGroup[] = [
     ],
   },
   {
-    label: 'HCM',
+    label: 'HR',
     items: [
       {
         label: 'Employees',
         to: '/people/employees',
         icon: Users,
         permissions: ['employees.view'],
-        module: 'hcm',
+        module: 'hr',
       },
       {
         label: 'Request leave',
         to: '/leave/request',
         icon: ClipboardList,
         permissions: ['leave.request'],
-        module: 'hcm',
+        module: 'hr',
+        feature: 'hr.leave',
       },
       {
         label: 'My leave',
         to: '/leave/mine',
         icon: ClipboardList,
         permissions: ['leave.request'],
-        module: 'hcm',
+        module: 'hr',
+        feature: 'hr.leave',
       },
       {
         label: 'Manager approvals',
         to: '/leave/manager',
         icon: ClipboardCheck,
         permissions: ['leave.approve.department'],
-        module: 'hcm',
+        module: 'hr',
+        feature: 'hr.leave',
       },
       {
         label: 'HR verification',
         to: '/leave/hr',
         icon: FileWarning,
         permissions: ['leave.verify.hr'],
-        module: 'hcm',
+        module: 'hr',
+        feature: 'hr.leave',
+      },
+      {
+        label: 'Profile approvals',
+        to: '/profile/hr-queue',
+        icon: ClipboardCheck,
+        permissions: ['profile.approve.hr'],
+        module: 'hr',
+        feature: 'hr.profile_self_service',
       },
     ],
   },

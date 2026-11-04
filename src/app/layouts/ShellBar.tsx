@@ -162,7 +162,12 @@ export function ShellBar() {
               Profile
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuLabel>Switch demo user</DropdownMenuLabel>
+            <DropdownMenuLabel>
+              <span className="mr-2 rounded-sm bg-warning/20 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-warning">
+                Dev
+              </span>
+              Switch demo user
+            </DropdownMenuLabel>
             {demoAccounts.map((account) => (
               <DropdownMenuItem
                 key={account.id}

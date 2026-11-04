@@ -1,16 +1,11 @@
 import { hasPermission } from '@/access/evaluate'
 import type { AppUser } from '@/types/access'
-import type { OpportunityRecord, QuotationRecord } from '@/types/commercial'
+import type { QuotationRecord } from '@/types/commercial'
 
-export function canConvertOpportunityToQuotation(
-  actor: AppUser,
-  opportunity: OpportunityRecord,
-): boolean {
-  if (!hasPermission(actor, 'erp.quotations.manage')) return false
-  if (opportunity.stage === 'lost' || opportunity.stage === 'won') return false
-  if (opportunity.quotationId) return false
-  return true
-}
+export {
+  assertOpportunityConversion,
+  canConvertOpportunityToQuotation,
+} from '@/shared/contracts'
 
 export function canFinanceApproveQuotation(
   actor: AppUser,
@@ -40,13 +35,3 @@ export function canMarkQuotationSent(
   return quotation.status === 'approved'
 }
 
-export function assertOpportunityConversion(
-  actor: AppUser,
-  opportunity: OpportunityRecord,
-): void {
-  if (!canConvertOpportunityToQuotation(actor, opportunity)) {
-    throw new Error(
-      'Not allowed to convert this opportunity to a quotation (permission, stage, or already converted)',
-    )
-  }
-}

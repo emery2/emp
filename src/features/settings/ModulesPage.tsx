@@ -2,33 +2,46 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { useState } from 'react'
 import {
-  fetchEnabledModules,
-  moduleKeys,
-  updateEnabledModules,
-} from '@/api/modules'
+  entitlementKeys,
+  fetchTenantModules,
+  updateTenantModules,
+} from '@/api/entitlements'
 import { MODULE_DEFINITIONS, MODULE_IDS, type ModuleId } from '@/access/modules'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { QueryError } from '@/components/shared/QueryState'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useAuth } from '@/hooks/useAuth'
+import { useTenant } from '@/hooks/useTenant'
+import { can } from '@/shared/policy/can'
 import { ACCESS_CONTROL_DISCLAIMER } from '@/types/access'
 
 export function ModulesPage() {
+  const { user } = useAuth()
+  const { tenant } = useTenant()
   const queryClient = useQueryClient()
   const query = useQuery({
-    queryKey: moduleKeys.enabled,
-    queryFn: fetchEnabledModules,
+    queryKey: entitlementKeys.modules(tenant.id),
+    queryFn: () => fetchTenantModules(tenant.id),
   })
   const [draft, setDraft] = useState<ModuleId[] | null>(null)
   const selected = draft ?? query.data ?? []
 
+  const mayEntitle = can(user, 'entitle', 'module', { tenantId: tenant.id })
+
   const mutation = useMutation({
-    mutationFn: () => updateEnabledModules(selected),
+    mutationFn: () => {
+      if (!user) throw new Error('Not signed in')
+      return updateTenantModules(tenant.id, selected, user.id)
+    },
     onSuccess: (next) => {
-      queryClient.setQueryData(moduleKeys.enabled, next)
+      queryClient.setQueryData(entitlementKeys.modules(tenant.id), next)
+      void queryClient.invalidateQueries({
+        queryKey: entitlementKeys.features(tenant.id),
+      })
       setDraft(null)
-      toast.success('Enabled modules updated')
+      toast.success(`Modules updated for ${tenant.name}`)
     },
     onError: (error: Error) => toast.error(error.message),
   })
@@ -56,19 +69,20 @@ export function ModulesPage() {
     <div className="max-w-2xl space-y-4">
       <PageHeader
         title="Modules"
-        description="Enable or disable product modules for this organization. Nav and routes respect these flags."
+        description={`Enable or disable services for ${tenant.name}. Nav, routes, and can() respect these flags.`}
       />
-      <ul className="space-y-2 bg-surface p-4">
+      <ul className="space-y-3">
         {MODULE_IDS.map((moduleId) => {
           const def = MODULE_DEFINITIONS[moduleId]
           const checked = selected.includes(moduleId)
           return (
             <li
               key={moduleId}
-              className="flex items-start gap-3 bg-surface-hover px-3 py-3"
+              className="flex items-start gap-3 bg-surface px-3 py-3"
             >
               <Checkbox
                 checked={checked}
+                disabled={!mayEntitle}
                 onCheckedChange={(value) => toggle(moduleId, Boolean(value))}
                 aria-label={def.label}
               />
@@ -80,24 +94,22 @@ export function ModulesPage() {
           )
         })}
       </ul>
-      <p className="text-[11px] text-text-muted">{ACCESS_CONTROL_DISCLAIMER}</p>
-      <div className="flex justify-end gap-2">
+      <div className="flex gap-2">
         <Button
-          variant="ghost"
-          type="button"
-          onClick={() => setDraft(null)}
-          disabled={!draft}
-        >
-          Cancel
-        </Button>
-        <Button
-          type="button"
-          disabled={mutation.isPending || !draft}
+          disabled={!mayEntitle || !draft || mutation.isPending}
           onClick={() => mutation.mutate()}
         >
-          Save modules
+          Save
+        </Button>
+        <Button
+          variant="ghost"
+          disabled={!draft}
+          onClick={() => setDraft(null)}
+        >
+          Discard
         </Button>
       </div>
+      <p className="text-[11px] text-text-muted">{ACCESS_CONTROL_DISCLAIMER}</p>
     </div>
   )
 }

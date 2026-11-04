@@ -5,6 +5,7 @@ import {
 import { PERMISSION_LABELS } from '@/access/permissions'
 import { ROLE_DEFINITIONS, type RoleId } from '@/access/roles'
 import { PageHeader } from '@/components/shared/PageHeader'
+import { ProfileSelfServicePanel } from '@/features/profile/ProfileSelfServicePanel'
 import { useAuth } from '@/hooks/useAuth'
 import { getDepartmentName, organization } from '@/mocks/organization'
 import { ACCESS_CONTROL_DISCLAIMER } from '@/types/access'
@@ -17,7 +18,7 @@ export function ProfilePage() {
   const scope = getDataScope(user)
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
+    <div className="mx-auto max-w-3xl space-y-8">
       <PageHeader
         title={`${user.firstName} ${user.lastName}`}
         description={user.title}
@@ -42,6 +43,8 @@ export function ProfilePage() {
           <p className="text-sm font-medium capitalize">{scope.scope}</p>
         </div>
       </div>
+
+      <ProfileSelfServicePanel />
 
       <section className="bg-surface p-4">
         <h2 className="mb-2 text-sm font-semibold">Roles</h2>
