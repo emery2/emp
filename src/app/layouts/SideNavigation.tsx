@@ -7,13 +7,15 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { useAuth } from '@/hooks/useAuth'
 import { useBranding } from '@/hooks/useBranding'
 import { useShell } from '@/hooks/useShell'
-import { isModuleEnabled } from '@/mocks/modules'
+import { useTenant } from '@/hooks/useTenant'
 import { organization } from '@/mocks/organization'
+import { mockEntitlementsRepository } from '@/shared/repositories/entitlements-repository'
 import { cn } from '@/lib/cn'
 
 export function SideNavigation({ onNavigate }: { onNavigate?: () => void }) {
   const { collapsed, toggleCollapsed } = useShell()
   const { user } = useAuth()
+  const { tenant } = useTenant()
   const branding = useBranding()
   const logoUrl = branding.data?.logoUrl
 
@@ -59,7 +61,16 @@ export function SideNavigation({ onNavigate }: { onNavigate?: () => void }) {
             const items = group.items.filter(
               (item) =>
                 hasAnyPermission(user, item.permissions) &&
-                (!item.module || isModuleEnabled(item.module)),
+                (!item.module ||
+                  mockEntitlementsRepository.isModuleEnabled(
+                    tenant.id,
+                    item.module,
+                  )) &&
+                (!item.feature ||
+                  mockEntitlementsRepository.isFeatureEffectivelyEnabled(
+                    tenant.id,
+                    item.feature,
+                  )),
             )
             if (items.length === 0) return null
             return (

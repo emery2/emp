@@ -1,11 +1,13 @@
 import type { Permission } from '@/access/permissions'
 
 export const ROLE_IDS = [
+  'super_administrator',
   'board_member',
   'ceo_executive',
   'head_of_department',
   'finance_officer',
   'hr_officer',
+  'hr_head',
   'procurement_officer',
   'warehouse_manufacturing_staff',
   'sales_customer_service_staff',
@@ -26,10 +28,26 @@ export interface RoleDefinition {
 const employeeBase: Permission[] = [
   'dashboard.employee.view',
   'leave.request',
+  'profile.edit.self',
   'calendar.view',
 ]
 
 export const ROLE_DEFINITIONS: Record<RoleId, RoleDefinition> = {
+  super_administrator: {
+    id: 'super_administrator',
+    label: 'Super Administrator',
+    description: 'Platform owner: tenant module and feature entitlements',
+    permissions: [
+      'dashboard.admin.view',
+      'features.entitle',
+      'features.configure',
+      'modules.configure',
+      'access.roles.manage',
+      'settings.view',
+      'reports.organization.view',
+      'calendar.view',
+    ],
+  },
   board_member: {
     id: 'board_member',
     label: 'Board Member',
@@ -48,6 +66,8 @@ export const ROLE_DEFINITIONS: Record<RoleId, RoleDefinition> = {
     permissions: [
       'dashboard.executive.view',
       'employees.view',
+      'profile.edit.self',
+      'profile.approve.hr',
       'reports.organization.view',
       'crm.leads.view',
       'crm.opportunities.view',
@@ -96,7 +116,25 @@ export const ROLE_DEFINITIONS: Record<RoleId, RoleDefinition> = {
       'employees.view',
       'leave.verify.hr',
       'leave.approve.department',
+      'profile.approve.hr',
+      'features.configure',
       'settings.view',
+    ],
+  },
+  hr_head: {
+    id: 'hr_head',
+    label: 'HR Head',
+    description: 'Leads HR; approves HR staff profile changes',
+    permissions: [
+      ...employeeBase,
+      'dashboard.hr.view',
+      'employees.view',
+      'leave.verify.hr',
+      'leave.approve.department',
+      'profile.approve.hr',
+      'features.configure',
+      'settings.view',
+      'reports.organization.view',
     ],
   },
   procurement_officer: {
@@ -165,12 +203,13 @@ export const ROLE_DEFINITIONS: Record<RoleId, RoleDefinition> = {
   system_administrator: {
     id: 'system_administrator',
     label: 'System Administrator',
-    description: 'Platform administration and access control',
+    description: 'Organization administration and access control',
     permissions: [
       'dashboard.admin.view',
       'employees.view',
       'access.roles.manage',
       'modules.configure',
+      'features.configure',
       'settings.view',
       'reports.organization.view',
       'calendar.view',

@@ -39,11 +39,13 @@ describe('permission resolution', () => {
   it('covers expanded enterprise demo roles', () => {
     expect(demoUsers.map((u) => u.roleIds[0])).toEqual(
       expect.arrayContaining([
+        'super_administrator',
         'board_member',
         'ceo_executive',
         'head_of_department',
         'finance_officer',
         'hr_officer',
+        'hr_head',
         'procurement_officer',
         'warehouse_manufacturing_staff',
         'sales_customer_service_staff',

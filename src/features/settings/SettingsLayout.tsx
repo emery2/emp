@@ -34,6 +34,16 @@ const settingsNav: Array<{
     to: '/settings/modules',
     permission: 'modules.configure',
   },
+  {
+    label: 'Feature entitlements',
+    to: '/settings/feature-entitlements',
+    permission: 'features.entitle',
+  },
+  {
+    label: 'Feature configuration',
+    to: '/settings/feature-config',
+    permission: 'features.configure',
+  },
 ]
 
 export function SettingsLayout() {

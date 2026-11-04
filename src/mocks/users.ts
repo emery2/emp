@@ -15,6 +15,17 @@ export const defaultFeatureFlags: Record<FeatureFlag, boolean> = {
  */
 export const demoUsers: AppUser[] = [
   {
+    id: 'user-super',
+    email: 'super@emp.example',
+    firstName: 'Alex',
+    lastName: 'Platform',
+    title: 'Super Administrator',
+    organizationId: 'org-norf',
+    departmentId: 'dept-people',
+    roleIds: ['super_administrator'],
+    isActive: true,
+  },
+  {
     id: 'user-board',
     email: 'board@norf.example',
     firstName: 'Helena',
@@ -63,6 +74,19 @@ export const demoUsers: AppUser[] = [
     requiresSuperiorApproval: true,
   },
   {
+    id: 'user-hr-head',
+    email: 'hr.head@norf.example',
+    firstName: 'Ava',
+    lastName: 'Chen',
+    title: 'HR Head',
+    organizationId: 'org-norf',
+    departmentId: 'dept-people',
+    managerId: 'user-ceo',
+    roleIds: ['hr_head'],
+    isActive: true,
+    requiresSuperiorApproval: true,
+  },
+  {
     id: 'user-hr',
     email: 'hr@norf.example',
     firstName: 'Mei',
@@ -70,7 +94,7 @@ export const demoUsers: AppUser[] = [
     title: 'HR Officer',
     organizationId: 'org-norf',
     departmentId: 'dept-people',
-    managerId: 'user-ceo',
+    managerId: 'user-hr-head',
     roleIds: ['hr_officer'],
     isActive: true,
     requiresSuperiorApproval: true,

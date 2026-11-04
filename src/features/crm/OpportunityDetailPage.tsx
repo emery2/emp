@@ -12,7 +12,7 @@ import { QueryError } from '@/components/shared/QueryState'
 import { StatusBadge } from '@/components/shared/StatusBadge'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { canConvertOpportunityToQuotation } from '@/features/erp/quotation-rules'
+import { canConvertOpportunityToQuotation } from '@/shared/contracts'
 import { useAuth } from '@/hooks/useAuth'
 import { formatCurrency } from '@/lib/formatters'
 

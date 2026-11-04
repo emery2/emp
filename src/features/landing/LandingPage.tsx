@@ -1,2 +1,8 @@
-/** @deprecated Use marketing HomePage via MarketingLayout. Kept for import safety. */
-export { HomePage as LandingPage } from '@/features/marketing/HomePage'
+/**
+ * Compatibility alias. Implementation lives in marketing; this file must not
+ * re-export across feature folders (import-boundary). Prefer importing
+ * `HomePage` from `@/features/marketing/HomePage`.
+ */
+export function LandingPage() {
+  return null
+}
